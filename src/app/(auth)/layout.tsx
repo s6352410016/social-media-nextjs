@@ -1,4 +1,5 @@
 import { AuthRedirectLink } from "@/components/auth-redirect-link";
+import { SocialLogin } from "@/components/social-login";
 import { HStack, Image, VStack } from "@chakra-ui/react";
 import NextImage from "next/image";
 import React from "react";
@@ -14,8 +15,10 @@ export default function AuthLayout({
         width="50vw" 
         height="100vh"
         justifyContent="center"
-        >
+        gapY="3"
+      >
         {children}
+        <SocialLogin />
         <AuthRedirectLink />
       </VStack>
       <VStack 

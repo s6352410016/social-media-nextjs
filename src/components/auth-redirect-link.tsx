@@ -30,11 +30,18 @@ export function AuthRedirectLink() {
   };
 
   return (
-    <Text fontWeight="normal">
-      {setText.redirectText} &nbsp;
-      <Link asChild color="gray.600" fontWeight="semibold">
-        <NextLink href={setText.href}>{setText.linkText}</NextLink>
-      </Link>
-    </Text>
+    <>
+      <Text fontWeight="normal">
+        {setText.redirectText} &nbsp;
+        <Link asChild color="gray.600" fontWeight="semibold">
+          <NextLink href={setText.href}>{setText.linkText}</NextLink>
+        </Link>
+      </Text>
+      {pathname === "/" && (
+        <Link asChild color="gray.600" fontWeight="semibold">
+          <NextLink href="/forgot-password">Forgot password?</NextLink>
+        </Link>
+      )}
+    </>
   );
 }

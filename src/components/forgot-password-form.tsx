@@ -1,0 +1,63 @@
+"use client";
+
+import { callApi } from "@/actions/call-api";
+import {
+  forgotPasswordSchema,
+  ForgotPasswordSchema,
+} from "@/utils/validations/auth";
+import { Button, Field, Fieldset, Input } from "@chakra-ui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+
+export function ForgotPasswordForm() {
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<ForgotPasswordSchema>({
+    resolver: zodResolver(forgotPasswordSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  const onSubmit = handleSubmit(async (data) => {
+    const res = await callApi<ForgotPasswordSchema>("email/send", data);
+    if (!res.success) {
+      toast.error(res.message);
+    } else {
+      toast.success(res.message);
+      reset();
+      router.push("/verify-otp");
+    }
+  });
+
+  return (
+    <form onSubmit={onSubmit}>
+      <Fieldset.Root width="400px">
+        <Fieldset.Legend fontSize="3xl" color="gray.700" marginBottom="4">
+          Forgot password
+        </Fieldset.Legend>
+
+        <Fieldset.Content>
+          <Field.Root invalid={!!errors.email}>
+            <Field.Label>
+              Email: <Field.RequiredIndicator />
+            </Field.Label>
+            <Input {...register("email")} type="email" />
+            <Field.ErrorText>{errors.email?.message}</Field.ErrorText>
+          </Field.Root>
+        </Fieldset.Content>
+
+        <Button disabled={isSubmitting} type="submit">
+          Submit
+        </Button>
+      </Fieldset.Root>
+    </form>
+  );
+}
