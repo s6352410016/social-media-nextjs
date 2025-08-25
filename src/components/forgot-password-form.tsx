@@ -10,8 +10,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { useAuthUserStore } from "@/providers/auth-user-store-provider";
 
 export function ForgotPasswordForm() {
+  const { setEmail } = useAuthUserStore((state) => state);
   const router = useRouter();
 
   const {
@@ -27,12 +29,17 @@ export function ForgotPasswordForm() {
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    const res = await callApi<ForgotPasswordSchema>("email/send", data);
+    const res = await callApi<ForgotPasswordSchema>(
+      "post",
+      "email/send",
+      data,
+    );
     if (!res.success) {
       toast.error(res.message);
     } else {
-      toast.success(res.message);
       reset();
+      setEmail(data.email);
+      toast.success(res.message);
       router.push("/verify-otp");
     }
   });

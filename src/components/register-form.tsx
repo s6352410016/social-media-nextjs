@@ -25,12 +25,16 @@ export function RegisterForm() {
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    const res = await callApi<RegisterSchema>("auth/register", data);
+    const res = await callApi<RegisterSchema>(
+      "post",
+      "auth/register", 
+      data,
+    );
     if(!res.success){
       toast.error(res.message);
     }else{
-      toast.success(res.message);
       reset();
+      toast.success(res.message);
     }
   });
 
