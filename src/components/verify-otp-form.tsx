@@ -1,8 +1,6 @@
 "use client";
 
 import { callApi } from "@/actions/call-api";
-import { useStore } from "@/hooks/use-store";
-import { createAuthUserStore } from "@/stores/auth-user-store";
 import { IOtpBody } from "@/utils/types";
 import { otpSchema, OtpSchema } from "@/utils/validations/auth";
 import { Button, Field, Heading, PinInput, VStack } from "@chakra-ui/react";
@@ -12,9 +10,6 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 export function VerifyOtpForm() {
-  const authUserStore = createAuthUserStore();
-  const email = useStore(authUserStore, (state) => state.email)!;
-
   const router = useRouter();
 
   const {
@@ -30,14 +25,9 @@ export function VerifyOtpForm() {
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    const res = await callApi<IOtpBody>(
-      "post", 
-      "email/verify-otp", 
-      {
-        email,
-        otp: data.otp.join(""),
-      },
-    );
+    const res = await callApi<IOtpBody>("post", "auth/email/verify-otp", {
+      otp: data.otp.join(""),
+    });
     if (!res.success) {
       toast.error(res.message);
     } else {

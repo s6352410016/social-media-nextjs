@@ -8,9 +8,11 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { PasswordInput } from "./ui/password-input";
+import { createAuthUserStore } from "@/stores/auth-user-store";
 
 export function ResetPasswordForm() {
   const router = useRouter();
+  const authUserStore = createAuthUserStore();
 
   const {
     register,
@@ -34,6 +36,7 @@ export function ResetPasswordForm() {
     if (!res.success) {
       toast.error(res.message);
     } else {
+      authUserStore.persist.clearStorage();
       reset();
       toast.success(res.message);
       router.push("/");

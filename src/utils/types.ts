@@ -8,6 +8,15 @@ export interface ICommonResponse {
 export type ApiBody<T> = T;
 
 export interface IOtpBody {
-  email: string;
   otp: string;
+}
+
+export interface IForgotPasswordPayload {
+  email: string;
+  sendEmailVerified: boolean;
+}
+
+export interface IResetPasswordPayload {
+  email: string;
+  otpVerified: boolean;
 }
