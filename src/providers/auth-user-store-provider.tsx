@@ -6,7 +6,6 @@ import { useStore } from "zustand";
 import { 
   type AuthUserStore, 
   createAuthUserStore,
-  initAuthUserStore,
 } from "@/stores/auth-user-store";
 
 export type AuthUserStoreApi = ReturnType<typeof createAuthUserStore>;
@@ -20,7 +19,7 @@ export interface AuthUserStoreProviderProps {
 export function AuthUserStoreProvider({ children }: AuthUserStoreProviderProps) {
   const storeRef = useRef<AuthUserStoreApi | null>(null);
   if (!storeRef.current) {
-    storeRef.current = createAuthUserStore(initAuthUserStore());
+    storeRef.current = createAuthUserStore();
   }
 
   return (

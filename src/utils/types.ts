@@ -20,3 +20,12 @@ export interface IResetPasswordPayload {
   email: string;
   otpVerified: boolean;
 }
+
+export interface IErrorTokenPayload {
+  socialAuthVerified: boolean;
+}
+
+export interface IAtPayload {
+  id: number;
+  authVerified: boolean;
+}

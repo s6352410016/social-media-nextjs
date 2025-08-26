@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyJwt } from "@/utils/helpers/verify-jwt";
-import { JWTExpired, JWTInvalid } from "jose/errors";
+import {
+  JWSInvalid,
+  JWSSignatureVerificationFailed,
+  JWTExpired,
+  JWTInvalid,
+} from "jose/errors";
 import { nextRedirect } from "./next-redirect";
 
 type GuardOptions<T> = {
   req: NextRequest;
-  cookieName: string;
+  token: string | undefined | null;
   secret: Uint8Array;
   validate: (payload: T) => boolean;
   redirectTo?: string;
@@ -13,12 +18,11 @@ type GuardOptions<T> = {
 
 export async function checkJwtGuard<T extends object>({
   req,
-  cookieName,
+  token,
   secret,
   validate,
   redirectTo = "/",
 }: GuardOptions<T>): Promise<NextResponse | null> {
-  const token = req.cookies.get(cookieName)?.value;
   if (!token) {
     return nextRedirect(redirectTo, req);
   }
@@ -29,7 +33,12 @@ export async function checkJwtGuard<T extends object>({
       return nextRedirect(redirectTo, req);
     }
   } catch (error) {
-    if (error instanceof JWTExpired || error instanceof JWTInvalid) {
+    if (
+      error instanceof JWTExpired ||
+      error instanceof JWTInvalid ||
+      error instanceof JWSSignatureVerificationFailed ||
+      error instanceof JWSInvalid
+    ) {
       return nextRedirect(redirectTo, req);
     }
   }

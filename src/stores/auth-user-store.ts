@@ -11,12 +11,6 @@ export type AuthUserAction = {
 
 export type AuthUserStore = AuthUserState & AuthUserAction;
 
-export function initAuthUserStore(): AuthUserState {
-  return {
-    email: "",
-  }
-}
-
 export const defaultInitState: AuthUserState = {
   email: "",
 }

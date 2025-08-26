@@ -4,13 +4,11 @@ import { Button, HStack } from "@chakra-ui/react";
 import { callApi } from "@/actions/call-api";
 import { ForgotPasswordSchema } from "@/utils/validations/auth";
 import { toast } from "react-toastify";
-import { createAuthUserStore } from "@/stores/auth-user-store";
-import { useStore } from "@/hooks/use-store";
 import { useState } from "react";
+import { useAuthUserStore } from "@/providers/auth-user-store-provider";
 
 export function ResendOtpLink() {
-  const authUserStore = createAuthUserStore();
-  const email = useStore(authUserStore, (state) => state.email)!;
+  const { email } = useAuthUserStore((state) => state);
 
   const [isLoading, setIsLoading] = useState(false);
 
