@@ -12,20 +12,27 @@ export default function AuthLayout({
   return (
     <HStack minHeight="100vh">
       <VStack 
-        width="50vw" 
+        width="100vw" 
         height="100vh"
         justifyContent="center"
         gapY="3"
+        xl={{
+          width: "50vw",
+        }}
       >
         {children}
         <SocialLogin />
         <AuthRedirectLink />
       </VStack>
       <VStack 
+        display="none"
         background="gray.100" 
         width="50vw" 
         height="100vh"
         justifyContent="center"
+        xl={{
+          display: "flex"
+        }}
       >
         <Image asChild>
           <NextImage

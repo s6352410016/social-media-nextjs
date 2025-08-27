@@ -1,6 +1,6 @@
 import { axiosInstance } from "@/utils/axios-instance";
 import { ApiBody, ICommonResponse } from "../utils/types";
-import { isAxiosError } from "axios";
+import { AxiosRequestConfig, isAxiosError } from "axios";
 
 type HttpMethod =
   | "get"
@@ -17,10 +17,15 @@ type HttpMethod =
 export async function callApi<TBody extends Object>(
   method: HttpMethod,
   url: string,
-  body: ApiBody<TBody>
+  config?: AxiosRequestConfig<any>,
+  body?: ApiBody<TBody>
 ): Promise<ICommonResponse> {
   try {
-    const { data } = await axiosInstance[method]<ICommonResponse>(url, body);
+    const { data } = await axiosInstance[method]<ICommonResponse>(
+      url,
+      body,
+      config,
+    );
     return data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {

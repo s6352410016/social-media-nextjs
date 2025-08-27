@@ -30,7 +30,7 @@ export function ResetPasswordForm() {
   const onSubmit = handleSubmit(async (data) => {
     const res = await callApi<ResetPasswordSchema>(
       "patch",
-      "auth/user/reset-password", 
+      "user/reset-password", 
       data,
     );
     if (!res.success) {

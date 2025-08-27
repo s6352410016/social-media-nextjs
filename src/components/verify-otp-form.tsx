@@ -25,7 +25,7 @@ export function VerifyOtpForm() {
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    const res = await callApi<IOtpBody>("post", "auth/email/verify-otp", {
+    const res = await callApi<IOtpBody>("post", "email/verify-otp", {
       otp: data.otp.join(""),
     });
     if (!res.success) {

@@ -76,7 +76,7 @@ export const config = {
     "/verify-otp", 
     "/reset-password", 
     "/login-error",
-    "/feed",
+    // "/feed",
     "/profile",
   ],
 };

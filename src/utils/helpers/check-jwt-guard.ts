@@ -32,7 +32,7 @@ export async function checkJwtGuard<T extends object>({
     if (!validate(payload)) {
       return nextRedirect(redirectTo, req);
     }
-  } catch (error) {
+  } catch (error: unknown) {
     if (
       error instanceof JWTExpired ||
       error instanceof JWTInvalid ||
