@@ -56,7 +56,7 @@ export async function middleware(req: NextRequest) {
     }
   } else if (
     req.nextUrl.pathname === "/feed" || 
-    req.nextUrl.pathname === "/profile"
+    req.nextUrl.pathname === "/feed/profile"
   ) {
     const token = req.cookies.get("access_token")?.value;
     const redirect = await checkJwtGuard<IAtPayload>({
@@ -76,7 +76,7 @@ export const config = {
     "/verify-otp", 
     "/reset-password", 
     "/login-error",
-    // "/feed",
-    "/profile",
+    "/feed",
+    "/feed/profile",
   ],
 };

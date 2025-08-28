@@ -1,27 +1,25 @@
 import { callApi } from "@/actions/call-api";
 import { IUser } from "@/utils/types";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
-export function useFindUsers(search: string, currentUserId?: number): IUser[] {
-  const [users, setUsers] = useState<IUser[]>([]);
+export function useFindUsers(search: string, currentUserId?: number) {
+  return useQuery({
+    queryKey: ["users", search, currentUserId],
+    queryFn: async ({ queryKey }) => {
+      const res = await callApi(
+        "get",
+        `user/find-by-fullname/${queryKey[2]}/${queryKey[1]}`
+      );
+      if(!res.success){
+        throw new Error(res.message);
+      }
 
-  async function fetchUsers() {
-    const res = await callApi("get", `user/find-by-fullname/${currentUserId}/${search}`);
-    if (!res.success) {
-      setUsers([]);
-    } else {
-      setUsers(res.data as IUser[]);
-    }
-  }
-
-  useEffect(() => {
-    if (!search || !currentUserId) {
-      setUsers([]);
-      return;
-    }
-
-    fetchUsers();
-  }, [search, currentUserId]);
-
-  return users;
+      return res.data as IUser[];
+    },
+    staleTime: 5 * 60 * 1000,
+    enabled: !!search && !!currentUserId,
+    meta: {
+      keepPreviousData: true,
+    },
+  });
 }

@@ -5,7 +5,12 @@ import { useUserStore } from "@/providers/user-store-provider";
 import { useEffect } from "react";
 
 export function Feed() {
-  const user = useUser();
+  const { 
+    isPending,
+    isError,
+    data: user,
+    error,
+  } = useUser();
   const { setUser } = useUserStore((state) => state);
   
   useEffect(() => {
@@ -14,5 +19,17 @@ export function Feed() {
     }
   }, [user, setUser]);
 
-  return <div>feed</div>;
+  if(isPending){
+    return <div>user is loading...</div>
+  }
+
+  if(isError){
+    return <div>Error: {error.message}</div>
+  }
+
+  return (
+    <>
+      <div>feed</div>
+    </>
+  );
 }

@@ -4,6 +4,7 @@ import { Provider } from "@/components/ui/provider";
 import { ToastContainer } from "react-toastify";
 import { AuthUserStoreProvider } from "@/providers/auth-user-store-provider";
 import { UserStoreProvider } from "@/providers/user-store-provider";
+import { TanStackQueryClientProvider } from "@/providers/tanstack-query-client-provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -31,14 +32,16 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthUserStoreProvider>
-          <UserStoreProvider>
-            <Provider>
-              <ToastContainer position="top-center" />
-              {children}
-            </Provider>
-          </UserStoreProvider>
-        </AuthUserStoreProvider>
+        <TanStackQueryClientProvider>
+          <AuthUserStoreProvider>
+            <UserStoreProvider>
+              <Provider>
+                <ToastContainer position="top-center" />
+                {children}
+              </Provider>
+            </UserStoreProvider>
+          </AuthUserStoreProvider>
+        </TanStackQueryClientProvider>
       </body>
     </html>
   );
