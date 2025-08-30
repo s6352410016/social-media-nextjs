@@ -5,13 +5,20 @@ import {
   searchPeopleSchema,
   SearchPeopleSchema,
 } from "@/utils/validations/search";
-import { Input, InputGroup, Popover, Portal, Text } from "@chakra-ui/react";
+import {
+  Input,
+  InputGroup,
+  Popover,
+  Portal,
+  Text,
+} from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { LuSearch } from "react-icons/lu";
 import { People } from "./people";
 import { useFindUsers } from "@/hooks/use-find-users";
 import { useUserStore } from "@/providers/user-store-provider";
+import { Spinner } from "./spinner";
 
 export function SearchPeople() {
   const { register, watch } = useForm<SearchPeopleSchema>({
@@ -26,13 +33,14 @@ export function SearchPeople() {
   const values = useDebounce(searchValues, 500);
   const {
     isLoading,
-    isError,
     data: users,
-    error,
   } = useFindUsers(values, user?.id);
 
   return (
-    <Popover.Root positioning={{ sameWidth: true }} autoFocus={false}>
+    <Popover.Root 
+      positioning={{ sameWidth: true }} 
+      autoFocus={false} 
+    >
       <Popover.Trigger asChild display="flex" width="full">
         <InputGroup flex="1" startElement={<LuSearch />}>
           <Input
@@ -52,12 +60,12 @@ export function SearchPeople() {
                 Search result:
               </Popover.Title>
               {isLoading ? (
-                <div>loading...</div>
+                <Spinner />
               ) : users && users.length ? (
                 <People users={users} />
               ) : (
                 <Text my="4" textAlign="center" fontSize="md">
-                  Not found peoples
+                  People not found
                 </Text>
               )}
             </Popover.Body>

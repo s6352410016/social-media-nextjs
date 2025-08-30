@@ -1,17 +1,15 @@
 "use client";
 
 import { callApi } from "@/actions/call-api";
+import { navigate } from "@/utils/helpers/router";
 import { IOtpBody } from "@/utils/types";
 import { otpSchema, OtpSchema } from "@/utils/validations/auth";
 import { Button, Field, Heading, PinInput, VStack } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 export function VerifyOtpForm() {
-  const router = useRouter();
-
   const {
     control,
     handleSubmit,
@@ -33,7 +31,7 @@ export function VerifyOtpForm() {
     } else {
       reset();
       toast.success(res.message);
-      router.push("/reset-password");
+      navigate("/reset-password");
     }
   });
 

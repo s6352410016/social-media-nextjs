@@ -7,14 +7,13 @@ import {
 } from "@/utils/validations/auth";
 import { Button, Field, Fieldset, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useAuthUserStore } from "@/providers/auth-user-store-provider";
+import { navigate } from "@/utils/helpers/router";
 
 export function ForgotPasswordForm() {
   const { setEmail } = useAuthUserStore((state) => state);
-  const router = useRouter();
 
   const {
     register,
@@ -40,7 +39,7 @@ export function ForgotPasswordForm() {
       reset();
       setEmail(data.email);
       toast.success(res.message);
-      router.push("/verify-otp");
+      navigate("/verify-otp");
     }
   });
 

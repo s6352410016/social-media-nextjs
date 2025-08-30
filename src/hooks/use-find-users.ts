@@ -11,15 +11,12 @@ export function useFindUsers(search: string, currentUserId?: number) {
         `user/find-by-fullname/${queryKey[2]}/${queryKey[1]}`
       );
       if(!res.success){
-        throw new Error(res.message);
+        return Promise.reject(res);
       }
 
       return res.data as IUser[];
     },
     staleTime: 5 * 60 * 1000,
     enabled: !!search && !!currentUserId,
-    meta: {
-      keepPreviousData: true,
-    },
   });
 }

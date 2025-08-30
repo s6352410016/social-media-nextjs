@@ -7,8 +7,8 @@ export function useUser() {
     queryKey: ["profile"],
     queryFn: async () => {
       const res = await callApi("get", "auth/profile");
-      if (!res.success) {
-        throw new Error(res.message);
+      if(!res.success){
+        return Promise.reject(res);
       }
 
       return res.data as IUser;

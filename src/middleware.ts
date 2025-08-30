@@ -6,6 +6,7 @@ import {
   IResetPasswordPayload,
 } from "./utils/types";
 import { checkJwtGuard } from "./utils/helpers/check-jwt-guard";
+import { refreshAccessToken } from "./utils/helpers/refresh-access-token";
 
 const secretForgotPassword = new TextEncoder().encode(
   process.env.FORGOT_PASSWORD_SECRET
@@ -16,9 +17,7 @@ const secretResetPassword = new TextEncoder().encode(
 const secretErrorToken = new TextEncoder().encode(
   process.env.SOCIAL_LOGIN_ERROR_SECRET
 );
-const atSecret = new TextEncoder().encode(
-  process.env.AT_SECRET
-);
+const atSecret = new TextEncoder().encode(process.env.AT_SECRET);
 
 export async function middleware(req: NextRequest) {
   if (req.nextUrl.pathname === "/verify-otp") {
@@ -55,7 +54,7 @@ export async function middleware(req: NextRequest) {
       return redirect;
     }
   } else if (
-    req.nextUrl.pathname === "/feed" || 
+    req.nextUrl.pathname === "/feed" ||
     req.nextUrl.pathname === "/feed/profile"
   ) {
     const token = req.cookies.get("access_token")?.value;
@@ -66,15 +65,18 @@ export async function middleware(req: NextRequest) {
       validate: (payload) => payload.authVerified === true,
     });
     if (redirect) {
-      return redirect;
+      const token = req.cookies.get("refresh_token")?.value!;
+      if (!(await refreshAccessToken(token))) {
+        return redirect;
+      }
     }
   }
 }
 
 export const config = {
   matcher: [
-    "/verify-otp", 
-    "/reset-password", 
+    "/verify-otp",
+    "/reset-password",
     "/login-error",
     "/feed",
     "/feed/profile",

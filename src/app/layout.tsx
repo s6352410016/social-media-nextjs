@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import { AuthUserStoreProvider } from "@/providers/auth-user-store-provider";
 import { UserStoreProvider } from "@/providers/user-store-provider";
 import { TanStackQueryClientProvider } from "@/providers/tanstack-query-client-provider";
+import { RouterProvider } from "@/providers/router-provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -37,6 +38,7 @@ export default function RootLayout({
             <UserStoreProvider>
               <Provider>
                 <ToastContainer position="top-center" />
+                <RouterProvider />
                 {children}
               </Provider>
             </UserStoreProvider>

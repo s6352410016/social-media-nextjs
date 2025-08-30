@@ -4,14 +4,12 @@ import { callApi } from "@/actions/call-api";
 import { LoginSchema, loginSchema } from "@/utils/validations/auth";
 import { Button, Field, Fieldset, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { PasswordInput } from "./ui/password-input";
+import { navigate } from "@/utils/helpers/router";
 
 export function LoginForm() {
-  const router = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -36,7 +34,7 @@ export function LoginForm() {
     } else {
       reset();
       toast.success(res.message);
-      router.push("/feed");
+      navigate("/feed");
     }
   });
 
