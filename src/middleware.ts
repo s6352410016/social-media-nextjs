@@ -7,6 +7,7 @@ import {
 } from "./utils/types";
 import { checkJwtGuard } from "./utils/helpers/check-jwt-guard";
 import { refreshAccessToken } from "./utils/helpers/refresh-access-token";
+import { nextRedirect } from "./utils/helpers/next-redirect";
 
 const secretForgotPassword = new TextEncoder().encode(
   process.env.FORGOT_PASSWORD_SECRET
@@ -55,7 +56,7 @@ export async function middleware(req: NextRequest) {
     }
   } else if (
     req.nextUrl.pathname === "/feed" ||
-    req.nextUrl.pathname === "/feed/profile"
+    req.nextUrl.pathname.startsWith("/profile")
   ) {
     const token = req.cookies.get("access_token")?.value;
     const redirect = await checkJwtGuard<IAtPayload>({
@@ -70,15 +71,27 @@ export async function middleware(req: NextRequest) {
         return redirect;
       }
     }
+  } else if (req.nextUrl.pathname === "/") {
+    const token = req.cookies.get("access_token")?.value;
+    const redirectBack = await checkJwtGuard<IAtPayload>({
+      req,
+      token,
+      secret: atSecret,
+      validate: (payload) => payload.authVerified === true,
+    });
+    if (!redirectBack) {
+      return nextRedirect("/feed", req);
+    }
   }
 }
 
 export const config = {
   matcher: [
+    "/",
     "/verify-otp",
     "/reset-password",
     "/login-error",
     "/feed",
-    "/feed/profile",
+    "/profile/:path*",
   ],
 };

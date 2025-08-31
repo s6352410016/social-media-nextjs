@@ -6,7 +6,7 @@ interface PeopleProps {
   users: IUser[];
 }
 
-export function People({ users }: PeopleProps) {
+export function Peoples({ users }: PeopleProps) {
   return (
     <>
       {users.map((user) => (

@@ -1,6 +1,6 @@
-import axiosInstance from "@/utils/axios-instance";
 import { ApiBody, ICommonResponse } from "../utils/types";
 import { AxiosRequestConfig, isAxiosError } from "axios";
+import axiosInstance from "@/utils/axios-instance";
 
 type HttpMethod =
   | "get"

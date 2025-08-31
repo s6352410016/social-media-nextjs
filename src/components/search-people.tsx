@@ -15,7 +15,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { LuSearch } from "react-icons/lu";
-import { People } from "./people";
+import { Peoples } from "./peoples";
 import { useFindUsers } from "@/hooks/use-find-users";
 import { useUserStore } from "@/providers/user-store-provider";
 import { Spinner } from "./spinner";
@@ -55,14 +55,14 @@ export function SearchPeople() {
         <Popover.Positioner>
           <Popover.Content width="auto">
             <Popover.Arrow />
-            <Popover.Body>
+            <Popover.Body overflowY="auto">
               <Popover.Title fontWeight="medium" fontSize="md" marginBottom="3">
                 Search result:
               </Popover.Title>
               {isLoading ? (
                 <Spinner />
               ) : users && users.length ? (
-                <People users={users} />
+                <Peoples users={users} />
               ) : (
                 <Text my="4" textAlign="center" fontSize="md">
                   People not found
