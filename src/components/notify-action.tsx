@@ -29,10 +29,6 @@ export function NotifyAction() {
                 Notify:
               </Popover.Title>
               <Notifies />
-              <Notifies />
-              <Notifies />
-              <Notifies />
-              <Notifies />
             </Popover.Body>
           </Popover.Content>
         </Popover.Positioner>

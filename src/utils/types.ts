@@ -5,9 +5,7 @@ export interface ICommonResponse {
   data?:
     | Object
     | string
-    | number
-    | boolean
-    | Array<Object | string | number | boolean>;
+    | Array<any>;
 }
 
 export type ApiBody<T> = T;
@@ -68,4 +66,27 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
   provider: IProvider;
+}
+
+enum NotificationType {
+  LIKE,
+  COMMENT,
+  FOLLOW,
+  SHARE,
+  POST,
+  REPLY,
+}
+
+export interface INotify {
+  id: number;
+  type: NotificationType;
+  senderId: number;
+  receiverId: number;
+  postId?: number;
+  commentId?: number;
+  message: string;
+  isRead: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  sender: Omit<IUser, "provider">;
 }

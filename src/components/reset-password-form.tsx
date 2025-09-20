@@ -1,6 +1,6 @@
 "use client";
 
-import { callApi } from "@/actions/call-api";
+import { callApi } from "@/utils/helpers/call-api";
 import { resetPasswordSchema, ResetPasswordSchema } from "@/utils/validations/auth";
 import { Button, Field, Fieldset } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";

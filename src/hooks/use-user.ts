@@ -1,4 +1,4 @@
-import { callApi } from "@/actions/call-api";
+import { callApi } from "@/utils/helpers/call-api";
 import { IUser } from "@/utils/types";
 import { useQuery } from "@tanstack/react-query";
 

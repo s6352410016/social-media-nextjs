@@ -1,4 +1,4 @@
-import { ApiBody, ICommonResponse } from "../utils/types";
+import { ApiBody, ICommonResponse } from "@/utils/types";
 import { AxiosRequestConfig, isAxiosError } from "axios";
 import axiosInstance from "@/utils/axios-instance";
 
@@ -26,7 +26,6 @@ export async function callApi<TBody extends Object>(
       body,
       config,
     );
-
     return data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {

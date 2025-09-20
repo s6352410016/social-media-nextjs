@@ -12,7 +12,7 @@ import { IoIosArrowDown, IoIosLogOut } from "react-icons/io";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useUserStore } from "@/providers/user-store-provider";
 import { navigate } from "@/utils/helpers/router";
-import { callApi } from "@/actions/call-api";
+import { callApi } from "@/utils/helpers/call-api";
 import { useState } from "react";
 
 export function UserAction() {

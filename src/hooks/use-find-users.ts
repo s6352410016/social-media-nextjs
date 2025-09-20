@@ -1,4 +1,4 @@
-import { callApi } from "@/actions/call-api";
+import { callApi } from "@/utils/helpers/call-api";
 import { IUser } from "@/utils/types";
 import { useQuery } from "@tanstack/react-query";
 
@@ -8,7 +8,7 @@ export function useFindUsers(search: string, currentUserId?: number) {
     queryFn: async ({ queryKey }) => {
       const res = await callApi(
         "get",
-        `user/find-by-fullname/${queryKey[2]}/${queryKey[1]}`
+        `user/find-by-fullname/${queryKey[2]}?fullname=${queryKey[1]}`
       );
       if(!res.success){
         return Promise.reject(res);

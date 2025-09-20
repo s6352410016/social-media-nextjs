@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, HStack } from "@chakra-ui/react";
-import { callApi } from "@/actions/call-api";
+import { callApi } from "@/utils/helpers/call-api";
 import { ForgotPasswordSchema } from "@/utils/validations/auth";
 import { toast } from "react-toastify";
 import { useState } from "react";

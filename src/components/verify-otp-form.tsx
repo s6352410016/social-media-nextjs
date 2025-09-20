@@ -1,6 +1,6 @@
 "use client";
 
-import { callApi } from "@/actions/call-api";
+import { callApi } from "@/utils/helpers/call-api";
 import { navigate } from "@/utils/helpers/router";
 import { IOtpBody } from "@/utils/types";
 import { otpSchema, OtpSchema } from "@/utils/validations/auth";

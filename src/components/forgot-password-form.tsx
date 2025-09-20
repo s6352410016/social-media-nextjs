@@ -1,6 +1,6 @@
 "use client";
 
-import { callApi } from "@/actions/call-api";
+import { callApi } from "@/utils/helpers/call-api";
 import {
   forgotPasswordSchema,
   ForgotPasswordSchema,
