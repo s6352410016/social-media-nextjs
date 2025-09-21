@@ -19,8 +19,15 @@ import { Peoples } from "./peoples";
 import { useFindUsers } from "@/hooks/use-find-users";
 import { useUserStore } from "@/providers/user-store-provider";
 import { Spinner } from "./spinner";
+import { useState } from "react";
 
 export function SearchPeople() {
+  const [open, setOpen] = useState(false);
+
+  function handleClosePopover(open: boolean){
+    setOpen(open);
+  }
+
   const { register, watch } = useForm<SearchPeopleSchema>({
     resolver: zodResolver(searchPeopleSchema),
     defaultValues: {
@@ -38,6 +45,8 @@ export function SearchPeople() {
 
   return (
     <Popover.Root 
+      open={open}
+      onOpenChange={(e) => handleClosePopover(e.open)}
       positioning={{ sameWidth: true }} 
       autoFocus={false} 
     >
@@ -62,7 +71,7 @@ export function SearchPeople() {
               {isLoading ? (
                 <Spinner />
               ) : users && users.length ? (
-                <Peoples users={users} />
+                <Peoples onClosePopover={handleClosePopover} users={users} />
               ) : (
                 <Text my="4" textAlign="center" fontSize="md">
                   People not found

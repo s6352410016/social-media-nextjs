@@ -16,9 +16,7 @@ interface NotifiesProps {
 
 export function Notifies({ onNotifyCount }: NotifiesProps) {
   const { user } = useUserStore((state) => state);
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-  });
+  const { ref, inView } = useInView();
 
   const {
     data: notifies,
@@ -26,7 +24,7 @@ export function Notifies({ onNotifyCount }: NotifiesProps) {
     hasNextPage,
     isFetchingNextPage,
     status,
-  } = useFindNotifies(5, user?.id);
+  } = useFindNotifies(10, user?.id);
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -70,7 +68,13 @@ export function Notifies({ onNotifyCount }: NotifiesProps) {
                 display="block"
                 borderY="0"
               >
-                <NextLink href="">
+                <NextLink href={
+                  notify.postId 
+                  ?
+                  `/post/${notify.postId}`
+                  :
+                  `/profile/${notify.senderId}`
+                  }>
                   <HStack alignItems="center" gapX="3" padding="2.5">
                     {notify.sender.profileUrl ? (
                       <Avatar.Root size="xl">
