@@ -1,13 +1,23 @@
-import { Circle, Portal } from "@chakra-ui/react";
+"use client";
+
+import { Badge, Circle, Portal } from "@chakra-ui/react";
 import { Popover } from "@chakra-ui/react";
 import { FaBell } from "react-icons/fa";
 import { Notifies } from "./notifies";
+import { useState } from "react";
 
 export function NotifyAction() {
+  const [notifyCount, setNotifyCount] = useState<number | null>(null);
+
+  function handleNotifyCount(count: number) {
+    setNotifyCount(count);
+  }
+
   return (
     <Popover.Root positioning={{ placement: "bottom-end" }}>
       <Popover.Trigger asChild>
         <Circle
+          position="relative"
           size="11"
           bg="gray.200"
           color="black"
@@ -18,6 +28,19 @@ export function NotifyAction() {
           }}
         >
           <FaBell />
+          {notifyCount && notifyCount > 0 && (
+            <Badge
+              size="sm"
+              colorPalette="red"
+              position="absolute"
+              top="-3px"
+              right="-3px"
+              variant="solid"
+              borderRadius="full"
+            >
+              {notifyCount}
+            </Badge>
+          )}
         </Circle>
       </Popover.Trigger>
       <Portal>
@@ -28,7 +51,7 @@ export function NotifyAction() {
               <Popover.Title fontWeight="medium" fontSize="md" marginBottom="3">
                 Notify:
               </Popover.Title>
-              <Notifies />
+              <Notifies onNotifyCount={handleNotifyCount} />
             </Popover.Body>
           </Popover.Content>
         </Popover.Positioner>

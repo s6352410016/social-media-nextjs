@@ -2,7 +2,7 @@ import { callApi } from "@/utils/helpers/call-api";
 import { INotify } from "@/utils/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-export function useFindNotifies(limit: number) {
+export function useFindNotifies(limit: number, activeUserId?: number) {
   return useInfiniteQuery({
     queryKey: ["notifies"],
     queryFn: async ({ pageParam }) => {
@@ -18,5 +18,15 @@ export function useFindNotifies(limit: number) {
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     staleTime: 5 * 60 * 1000,
+    select: (data) => {
+      const allNotifications = data.pages.map((page) => page.notifies).flat();
+      const sortedNotifications = allNotifications
+      .filter((notify) => (notify.senderId !== activeUserId) && (notify.receiverId === activeUserId))
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      return { ...data, pages: [{ notifies: sortedNotifications, nextCursor: null }] };
+    },
   });
 }

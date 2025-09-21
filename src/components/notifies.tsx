@@ -7,10 +7,18 @@ import { Link } from "@chakra-ui/react";
 import { Spinner } from "./spinner";
 import { Fragment, useEffect } from "react";
 import { formatDate } from "@/utils/helpers/format-date";
+import { useUserStore } from "@/providers/user-store-provider";
 import NextLink from "next/link";
 
-export function Notifies() {
-  const { ref, inView } = useInView();
+interface NotifiesProps {
+  onNotifyCount: (count: number) => void;
+}
+
+export function Notifies({ onNotifyCount }: NotifiesProps) {
+  const { user } = useUserStore((state) => state);
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+  });
 
   const {
     data: notifies,
@@ -18,13 +26,21 @@ export function Notifies() {
     hasNextPage,
     isFetchingNextPage,
     status,
-  } = useFindNotifies(5);
+  } = useFindNotifies(5, user?.id);
 
   useEffect(() => {
     if (inView && hasNextPage) {
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    if(notifies){
+      const allNotifications = notifies.pages.map(({ notifies }) => notifies).flat();
+      const unReadNotifyCount = allNotifications.filter((notify) => !notify.isRead).length;
+      onNotifyCount(unReadNotifyCount);
+    }
+  }, [notifies, onNotifyCount]);
 
   return (
     <Box maxH="400px" overflowY="auto">
