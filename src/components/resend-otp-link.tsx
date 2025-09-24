@@ -6,6 +6,7 @@ import { ForgotPasswordSchema } from "@/utils/validations/auth";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { useAuthUserStore } from "@/providers/auth-user-store-provider";
+import { formatToastMessages } from "@/utils/helpers/format-toast-messages";
 
 export function ResendOtpLink() {
   const { email } = useAuthUserStore((state) => state);
@@ -23,9 +24,9 @@ export function ResendOtpLink() {
     );
     setIsLoading(false);
     if (!res.success) {
-      toast.error(res.message);
+      toast.error(formatToastMessages(res.message));
     } else {
-      toast.success(res.message);
+      toast.success(formatToastMessages(res.message));
     }
   }
 

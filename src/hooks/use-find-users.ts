@@ -2,7 +2,7 @@ import { callApi } from "@/utils/helpers/call-api";
 import { IUser } from "@/utils/types";
 import { useQuery } from "@tanstack/react-query";
 
-export function useFindUsers(search: string, currentUserId?: number) {
+export function useFindUsers(search: string, currentUserId?: string) {
   return useQuery({
     queryKey: ["users", search, currentUserId],
     queryFn: async ({ queryKey }) => {
@@ -16,7 +16,6 @@ export function useFindUsers(search: string, currentUserId?: number) {
 
       return res.data as IUser[];
     },
-    staleTime: 5 * 60 * 1000,
     enabled: !!search && !!currentUserId,
   });
 }

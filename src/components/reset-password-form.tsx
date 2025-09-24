@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { PasswordInput } from "./ui/password-input";
 import { createAuthUserStore } from "@/stores/auth-user-store";
 import { navigate } from "@/utils/helpers/router";
+import { formatToastMessages } from "@/utils/helpers/format-toast-messages";
 
 export function ResetPasswordForm() {
   const authUserStore = createAuthUserStore();
@@ -33,11 +34,11 @@ export function ResetPasswordForm() {
       data,
     );
     if (!res.success) {
-      toast.error(res.message);
+      toast.error(formatToastMessages(res.message));
     } else {
       authUserStore.persist.clearStorage();
       reset();
-      toast.success(res.message);
+      toast.success(formatToastMessages(res.message));
       navigate("/");
     }
   });

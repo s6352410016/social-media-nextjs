@@ -28,19 +28,19 @@ export function NotifyAction() {
           }}
         >
           <FaBell />
-          {notifyCount && notifyCount > 0 && (
+          {notifyCount && notifyCount > 0 ? (
             <Badge
               size="sm"
               colorPalette="red"
               position="absolute"
-              top="-3px"
+              top="-5px"
               right="-3px"
               variant="solid"
               borderRadius="full"
             >
               {notifyCount}
             </Badge>
-          )}
+          ) : null}
         </Circle>
       </Popover.Trigger>
       <Portal>

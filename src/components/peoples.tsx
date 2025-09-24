@@ -8,7 +8,7 @@ interface PeopleProps {
 }
 
 export function Peoples({ users, onClosePopover }: PeopleProps) {
-  function handleClickPeople(userId: number) {
+  function handleClickPeople(userId: string) {
     onClosePopover(false);
     navigate(`/profile/${userId}`);
   }

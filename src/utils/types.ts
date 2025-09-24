@@ -1,11 +1,11 @@
 export interface ICommonResponse {
   status: number;
   success: boolean;
-  message: string;
+  message: string | string[];
   data?:
     | Object
     | string
-    | Array<any>;
+    | any[];
 }
 
 export type ApiBody<T> = T;
@@ -29,7 +29,7 @@ export interface IErrorTokenPayload {
 }
 
 export interface IAtPayload {
-  id: number;
+  id: string;
   authVerified: boolean;
 }
 
@@ -48,13 +48,13 @@ export interface IProvider {
   id: number;
   providerType: ProviderType;
   providerId?: string;
-  userId: number;
+  userId: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface IUser {
-  id: number;
+  id: string;
   fullname: string;
   username: string;
   email: string;
@@ -78,12 +78,12 @@ enum NotificationType {
 }
 
 export interface INotify {
-  id: number;
+  id: string;
   type: NotificationType;
-  senderId: number;
-  receiverId: number;
-  postId?: number;
-  commentId?: number;
+  senderId: string;
+  receiverId: string;
+  postId?: string;
+  commentId?: string;
   message: string;
   isRead: boolean;
   createdAt: Date;

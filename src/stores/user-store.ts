@@ -7,6 +7,7 @@ export type UserState = {
 
 export type UserAction = {
   setUser: (user: IUser) => void;
+  clearUser: () => void;
 }
 
 export type UserStore = UserState & UserAction;
@@ -21,5 +22,6 @@ export function createUserStore(
   return createStore<UserStore>()((set) => ({
     ...initState,
     setUser: (user: IUser) => set({ user }),
+    clearUser: () => set({ user: null }),
   }));
 }

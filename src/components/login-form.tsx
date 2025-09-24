@@ -8,8 +8,12 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { PasswordInput } from "./ui/password-input";
 import { navigate } from "@/utils/helpers/router";
+import { formatToastMessages } from "@/utils/helpers/format-toast-messages";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function LoginForm() {
+  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
@@ -30,10 +34,12 @@ export function LoginForm() {
       data,
     );
     if (!res.success) {
-      toast.error(res.message);
+      toast.error(formatToastMessages(res.message));
     } else {
       reset();
-      toast.success(res.message);
+      toast.success(formatToastMessages(res.message));
+
+      queryClient.clear();
       navigate("/feed");
     }
   });

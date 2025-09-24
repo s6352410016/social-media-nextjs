@@ -1,6 +1,7 @@
 "use client";
 
 import { callApi } from "@/utils/helpers/call-api";
+import { formatToastMessages } from "@/utils/helpers/format-toast-messages";
 import { navigate } from "@/utils/helpers/router";
 import { IOtpBody } from "@/utils/types";
 import { otpSchema, OtpSchema } from "@/utils/validations/auth";
@@ -27,10 +28,10 @@ export function VerifyOtpForm() {
       otp: data.otp.join(""),
     });
     if (!res.success) {
-      toast.error(res.message);
+      toast.error(formatToastMessages(res.message));
     } else {
       reset();
-      toast.success(res.message);
+      toast.success(formatToastMessages(res.message));
       navigate("/reset-password");
     }
   });

@@ -13,6 +13,7 @@ import React from "react";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      staleTime: 5 * 60 * 1000,
       retry: (failureCount, error) => {
         const errorData = error as unknown as ICommonResponse;
         if (errorData.status === 401) {

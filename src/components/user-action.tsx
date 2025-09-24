@@ -16,11 +16,11 @@ import { callApi } from "@/utils/helpers/call-api";
 import { useState } from "react";
 
 export function UserAction() {
-  const { user } = useUserStore((state) => state);
+  const { user, clearUser } = useUserStore((state) => state);
 
   const [disabled, setDisabled] = useState(false);
 
-  function handleProfile (id?: number) {
+  function handleProfile (id?: string) {
     if(id){
       navigate(`/profile/${id}`);
     }
@@ -31,6 +31,7 @@ export function UserAction() {
     const data = await callApi("post", "auth/logout");
     setDisabled(false);
     if(data.success || !data.success){
+      clearUser();
       navigate("/");
     }
   }

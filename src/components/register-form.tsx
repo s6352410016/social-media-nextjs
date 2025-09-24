@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { PasswordInput } from "./ui/password-input";
+import { formatToastMessages } from "@/utils/helpers/format-toast-messages";
 
 export function RegisterForm() {
   const {
@@ -31,10 +32,10 @@ export function RegisterForm() {
       data,
     );
     if(!res.success){
-      toast.error(res.message);
+      toast.error(formatToastMessages(res.message));
     }else{
       reset();
-      toast.success(res.message);
+      toast.success(formatToastMessages(res.message));
     }
   });
 

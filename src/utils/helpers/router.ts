@@ -13,3 +13,11 @@ export function navigate(path: string) {
     window.location.href = path;
   }
 }
+
+export function refresh() {
+  if(router){
+    router.refresh();
+  }else{
+    window.location.reload();
+  }
+}

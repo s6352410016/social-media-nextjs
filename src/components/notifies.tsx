@@ -33,10 +33,11 @@ export function Notifies({ onNotifyCount }: NotifiesProps) {
   }, [inView, hasNextPage, fetchNextPage]);
 
   useEffect(() => {
-    if(notifies){
-      const allNotifications = notifies.pages.map(({ notifies }) => notifies).flat();
-      const unReadNotifyCount = allNotifications.filter((notify) => !notify.isRead).length;
-      onNotifyCount(unReadNotifyCount);
+    if (notifies) {
+      const notifyCount = notifies.pages.flatMap(
+        (page) => page.notifies
+      ).length;
+      onNotifyCount(notifyCount);
     }
   }, [notifies, onNotifyCount]);
 
@@ -54,55 +55,65 @@ export function Notifies({ onNotifyCount }: NotifiesProps) {
       ) : (
         notifies?.pages.map((group, i) => (
           <Fragment key={i}>
-            {group.notifies.map((notify) => (
-              <Link
-                key={notify.id}
-                asChild
-                _hover={{
-                  backgroundColor: "gray.100",
-                  transitionDuration: "slow",
-                  textDecoration: "none",
-                }}
-                _focus={{ boxShadow: "none", outline: "none" }}
-                borderRadius="sm"
-                display="block"
-                borderY="0"
-              >
-                <NextLink href={
-                  notify.postId 
-                  ?
-                  `/post/${notify.postId}`
-                  :
-                  `/profile/${notify.senderId}`
-                  }>
-                  <HStack alignItems="center" gapX="3" padding="2.5">
-                    {notify.sender.profileUrl ? (
-                      <Avatar.Root size="xl">
-                        <Avatar.Fallback name={notify.sender.fullname} />
-                        <Avatar.Image src={notify.sender.profileUrl} />
-                      </Avatar.Root>
-                    ) : (
-                      <Avatar.Root size="xl">
-                        <Avatar.Fallback name={notify.sender.fullname} />
-                      </Avatar.Root>
-                    )}
-                    <VStack alignItems="start" justifyContent="center" gap="0">
-                      <Text fontWeight="medium" truncate>
-                        {notify.sender.fullname}
-                      </Text>
-                      <Flex maxW="200px">
-                        <Text fontWeight="normal" truncate>
-                          {notify.message}
+            {group.notifies.length ? (
+              group.notifies.map((notify) => (
+                <Link
+                  key={notify.id}
+                  asChild
+                  _hover={{
+                    backgroundColor: "gray.100",
+                    transitionDuration: "slow",
+                    textDecoration: "none",
+                  }}
+                  _focus={{ boxShadow: "none", outline: "none" }}
+                  borderRadius="sm"
+                  display="block"
+                  borderY="0"
+                >
+                  <NextLink
+                    href={
+                      notify.postId
+                        ? `/post/${notify.postId}`
+                        : `/profile/${notify.senderId}`
+                    }
+                  >
+                    <HStack alignItems="center" gapX="3" padding="2.5">
+                      {notify.sender.profileUrl ? (
+                        <Avatar.Root size="xl">
+                          <Avatar.Fallback name={notify.sender.fullname} />
+                          <Avatar.Image src={notify.sender.profileUrl} />
+                        </Avatar.Root>
+                      ) : (
+                        <Avatar.Root size="xl">
+                          <Avatar.Fallback name={notify.sender.fullname} />
+                        </Avatar.Root>
+                      )}
+                      <VStack
+                        alignItems="start"
+                        justifyContent="center"
+                        gap="0"
+                      >
+                        <Text fontWeight="medium" truncate>
+                          {notify.sender.fullname}
                         </Text>
-                      </Flex>
-                      <Text color="fg.muted" textStyle="sm">
-                        {formatDate(notify.createdAt)}
-                      </Text>
-                    </VStack>
-                  </HStack>
-                </NextLink>
-              </Link>
-            ))}
+                        <Flex maxW="200px">
+                          <Text fontWeight="normal" truncate>
+                            {notify.message}
+                          </Text>
+                        </Flex>
+                        <Text color="fg.muted" textStyle="sm">
+                          {formatDate(notify.createdAt)}
+                        </Text>
+                      </VStack>
+                    </HStack>
+                  </NextLink>
+                </Link>
+              ))
+            ) : (
+              <Text my="4" textAlign="center" fontSize="md">
+                Notify not found
+              </Text>
+            )}
           </Fragment>
         ))
       )}

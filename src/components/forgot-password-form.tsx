@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useAuthUserStore } from "@/providers/auth-user-store-provider";
 import { navigate } from "@/utils/helpers/router";
+import { formatToastMessages } from "@/utils/helpers/format-toast-messages";
 
 export function ForgotPasswordForm() {
   const { setEmail } = useAuthUserStore((state) => state);
@@ -34,11 +35,11 @@ export function ForgotPasswordForm() {
       data,
     );
     if (!res.success) {
-      toast.error(res.message);
+      toast.error(formatToastMessages(res.message));
     } else {
       reset();
       setEmail(data.email);
-      toast.success(res.message);
+      toast.success(formatToastMessages(res.message));
       navigate("/verify-otp");
     }
   });
