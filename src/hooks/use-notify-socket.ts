@@ -25,5 +25,9 @@ export function useNotifySocket(activeUserId?: string) {
         };
       });
     });
-  }, [queryClient, activeUserId]);
+
+    return () => {
+      socket?.off(`notification:${activeUserId}`);
+    }
+  }, [socket, queryClient, activeUserId]);
 }
