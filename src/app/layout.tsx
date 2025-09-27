@@ -6,6 +6,7 @@ import { AuthUserStoreProvider } from "@/providers/auth-user-store-provider";
 import { UserStoreProvider } from "@/providers/user-store-provider";
 import { TanStackQueryClientProvider } from "@/providers/tanstack-query-client-provider";
 import { RouterProvider } from "@/providers/router-provider";
+import { SocketIoProvider } from "@/providers/socket-io-provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -33,17 +34,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <TanStackQueryClientProvider>
-          <AuthUserStoreProvider>
-            <UserStoreProvider>
-              <Provider>
-                <ToastContainer position="top-center" />
-                <RouterProvider />
-                {children}
-              </Provider>
-            </UserStoreProvider>
-          </AuthUserStoreProvider>
-        </TanStackQueryClientProvider>
+        <SocketIoProvider>
+          <TanStackQueryClientProvider>
+            <AuthUserStoreProvider>
+              <UserStoreProvider>
+                <Provider>
+                  <ToastContainer position="top-center" />
+                  <RouterProvider />
+                  {children}
+                </Provider>
+              </UserStoreProvider>
+            </AuthUserStoreProvider>
+          </TanStackQueryClientProvider>
+        </SocketIoProvider>
       </body>
     </html>
   );

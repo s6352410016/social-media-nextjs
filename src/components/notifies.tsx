@@ -8,6 +8,7 @@ import { Spinner } from "./spinner";
 import { Fragment, useEffect } from "react";
 import { formatDate } from "@/utils/helpers/format-date";
 import { useUserStore } from "@/providers/user-store-provider";
+import { useNotifySocket } from "@/hooks/use-notify-socket";
 import NextLink from "next/link";
 
 interface NotifiesProps {
@@ -18,6 +19,7 @@ export function Notifies({ onNotifyCount }: NotifiesProps) {
   const { user } = useUserStore((state) => state);
   const { ref, inView } = useInView();
 
+  useNotifySocket(user?.id);
   const {
     data: notifies,
     fetchNextPage,
