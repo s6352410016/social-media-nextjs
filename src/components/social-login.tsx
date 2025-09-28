@@ -4,7 +4,7 @@ import { Button, HStack, Icon } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
 import { IoLogoGithub } from "react-icons/io";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { navigate } from "@/utils/helpers/router";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
@@ -16,10 +16,10 @@ export function SocialLogin() {
 
   const [isRedirecting, setIsRedirecting] = useState(false);
 
-  const handleLogin = (url: string) => {
+  const handleLogin = useCallback((url: string) => {
     setIsRedirecting(true);
     navigate(url);
-  };
+  }, []);
 
   return (
     <>

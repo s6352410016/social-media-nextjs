@@ -1,40 +1,33 @@
 "use client";
 
-import {
-  Button,
-  Circle,
-  Icon,
-  Popover,
-  Portal,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Circle, Icon, Popover, Portal, Text } from "@chakra-ui/react";
 import { IoIosArrowDown, IoIosLogOut } from "react-icons/io";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useUserStore } from "@/providers/user-store-provider";
 import { navigate } from "@/utils/helpers/router";
 import { callApi } from "@/utils/helpers/call-api";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export function UserAction() {
   const { user, clearUser } = useUserStore((state) => state);
 
   const [disabled, setDisabled] = useState(false);
 
-  function handleProfile (id?: string) {
-    if(id){
+  const handleProfile = useCallback((id?: string) => {
+    if (id) {
       navigate(`/profile/${id}`);
     }
-  }
+  }, []);
 
-  async function handleLogout () {
+  const handleLogout = useCallback(async () => {
     setDisabled(true);
     const data = await callApi("post", "auth/logout");
     setDisabled(false);
-    if(data.success || !data.success){
+    if (data.success || !data.success) {
       clearUser();
       navigate("/");
     }
-  }
+  }, []);
 
   return (
     <Popover.Root positioning={{ placement: "bottom-end" }}>
@@ -57,11 +50,7 @@ export function UserAction() {
           <Popover.Content width="200px">
             <Popover.Arrow />
             <Popover.Body>
-              <Popover.Title 
-                fontWeight="medium" 
-                fontSize="md"
-                marginBottom="2"
-              >
+              <Popover.Title fontWeight="medium" fontSize="md" marginBottom="2">
                 User settings:
               </Popover.Title>
 

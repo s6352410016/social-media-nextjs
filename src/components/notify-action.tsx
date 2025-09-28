@@ -4,19 +4,30 @@ import { Badge, Circle, Portal } from "@chakra-ui/react";
 import { Popover } from "@chakra-ui/react";
 import { FaBell } from "react-icons/fa";
 import { Notifies } from "./notifies";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { INotify } from "@/utils/types";
+import { useReadNotify } from "@/hooks/use-read-notify";
 
 export function NotifyAction() {
-  const [notifyCount, setNotifyCount] = useState<number | null>(null);
+  const [unReadNotify, setUnReadNotify] = useState<INotify[]>([]);
 
-  function handleNotifyCount(count: number) {
-    setNotifyCount(count);
-  }
+  const mutation = useReadNotify();
+
+  const handleNotifyCount = useCallback((notify: INotify[]) => {
+    setUnReadNotify(notify);
+  }, []);
+
+  const handleReadNotify = useCallback(() => {
+    unReadNotify.forEach((notify) => {
+      mutation.mutate(notify.id);
+    });
+  }, [unReadNotify, mutation]);
 
   return (
     <Popover.Root positioning={{ placement: "bottom-end" }}>
       <Popover.Trigger asChild>
         <Circle
+          onClick={handleReadNotify}
           position="relative"
           size="11"
           bg="gray.200"
@@ -28,7 +39,7 @@ export function NotifyAction() {
           }}
         >
           <FaBell />
-          {notifyCount && notifyCount > 0 ? (
+          {unReadNotify && unReadNotify.length > 0 ? (
             <Badge
               size="sm"
               colorPalette="red"
@@ -38,7 +49,7 @@ export function NotifyAction() {
               variant="solid"
               borderRadius="full"
             >
-              {notifyCount}
+              {unReadNotify.length}
             </Badge>
           ) : null}
         </Circle>

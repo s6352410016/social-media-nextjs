@@ -34,8 +34,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SocketIoProvider>
-          <TanStackQueryClientProvider>
+        <TanStackQueryClientProvider>
+          <SocketIoProvider>
             <AuthUserStoreProvider>
               <UserStoreProvider>
                 <Provider>
@@ -45,8 +45,8 @@ export default function RootLayout({
                 </Provider>
               </UserStoreProvider>
             </AuthUserStoreProvider>
-          </TanStackQueryClientProvider>
-        </SocketIoProvider>
+          </SocketIoProvider>
+        </TanStackQueryClientProvider>
       </body>
     </html>
   );

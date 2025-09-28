@@ -10,9 +10,10 @@ import { formatDate } from "@/utils/helpers/format-date";
 import { useUserStore } from "@/providers/user-store-provider";
 import { useNotifySocket } from "@/hooks/use-notify-socket";
 import NextLink from "next/link";
+import { INotify } from "@/utils/types";
 
 interface NotifiesProps {
-  onNotifyCount: (count: number) => void;
+  onNotifyCount: (notify: INotify[]) => void;
 }
 
 export function Notifies({ onNotifyCount }: NotifiesProps) {
@@ -36,10 +37,10 @@ export function Notifies({ onNotifyCount }: NotifiesProps) {
 
   useEffect(() => {
     if (notifies) {
-      const notifyCount = notifies.pages.flatMap(
-        (page) => page.notifies
-      ).length;
-      onNotifyCount(notifyCount);
+      const unReadNotifies = notifies.pages
+        .flatMap((page) => page.notifies)
+        .filter((notification) => !notification.isRead);
+      onNotifyCount(unReadNotifies);
     }
   }, [notifies, onNotifyCount]);
 

@@ -5,13 +5,7 @@ import {
   searchPeopleSchema,
   SearchPeopleSchema,
 } from "@/utils/validations/search";
-import {
-  Input,
-  InputGroup,
-  Popover,
-  Portal,
-  Text,
-} from "@chakra-ui/react";
+import { Input, InputGroup, Popover, Portal, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { LuSearch } from "react-icons/lu";
@@ -19,14 +13,14 @@ import { Peoples } from "./peoples";
 import { useFindUsers } from "@/hooks/use-find-users";
 import { useUserStore } from "@/providers/user-store-provider";
 import { Spinner } from "./spinner";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export function SearchPeople() {
   const [open, setOpen] = useState(false);
 
-  function handleClosePopover(open: boolean){
+  const handleClosePopover = useCallback((open: boolean) => {
     setOpen(open);
-  }
+  }, []);
 
   const { register, watch } = useForm<SearchPeopleSchema>({
     resolver: zodResolver(searchPeopleSchema),
@@ -38,17 +32,14 @@ export function SearchPeople() {
   const searchValues = watch("search");
   const { user } = useUserStore((state) => state);
   const values = useDebounce(searchValues, 500);
-  const {
-    isLoading,
-    data: users,
-  } = useFindUsers(values, user?.id);
+  const { isLoading, data: users } = useFindUsers(values, user?.id);
 
   return (
-    <Popover.Root 
+    <Popover.Root
       open={open}
       onOpenChange={(e) => handleClosePopover(e.open)}
-      positioning={{ sameWidth: true }} 
-      autoFocus={false} 
+      positioning={{ sameWidth: true }}
+      autoFocus={false}
     >
       <Popover.Trigger asChild display="flex" width="full">
         <InputGroup flex="1" startElement={<LuSearch />}>
