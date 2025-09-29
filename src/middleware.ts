@@ -93,6 +93,20 @@ export async function middleware(req: NextRequest) {
     if (!redirectBack) {
       return nextRedirect("/feed", req);
     }
+
+    const rtToken = req.cookies.get("refresh_token")?.value!;
+    const newToken = await refreshAccessToken(rtToken);
+
+    if (newToken) {
+      const res = NextResponse.next();
+      setCookies(
+        ["access_token", "refresh_token"],
+        [newToken.accessToken, newToken.refreshToken],
+        res
+      );
+
+      return nextRedirect("/feed", req);
+    }
   }
 }
 
