@@ -5,7 +5,14 @@ import {
   searchPeopleSchema,
   SearchPeopleSchema,
 } from "@/utils/validations/search";
-import { Input, InputGroup, Popover, Portal, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  Input,
+  InputGroup,
+  Popover,
+  Portal,
+  Text,
+} from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { LuSearch } from "react-icons/lu";
@@ -35,43 +42,55 @@ export function SearchPeople() {
   const { isLoading, data: users } = useFindUsers(values, user?.id);
 
   return (
-    <Popover.Root
-      open={open}
-      onOpenChange={(e) => handleClosePopover(e.open)}
-      positioning={{ sameWidth: true }}
-      autoFocus={false}
+    <Flex
+      flex="1"
+      display="none"
+      md={{
+        display: "flex"
+      }}
     >
-      <Popover.Trigger asChild display="flex" width="full">
-        <InputGroup flex="1" startElement={<LuSearch />}>
-          <Input
-            {...register("search")}
-            placeholder="Search people"
-            variant="subtle"
-            autoComplete="off"
-          />
-        </InputGroup>
-      </Popover.Trigger>
-      <Portal>
-        <Popover.Positioner>
-          <Popover.Content width="auto">
-            <Popover.Arrow />
-            <Popover.Body overflowY="auto">
-              <Popover.Title fontWeight="medium" fontSize="md" marginBottom="3">
-                Search result:
-              </Popover.Title>
-              {isLoading ? (
-                <Spinner />
-              ) : users && users.length ? (
-                <Peoples onClosePopover={handleClosePopover} users={users} />
-              ) : (
-                <Text my="4" textAlign="center" fontSize="md">
-                  People not found
-                </Text>
-              )}
-            </Popover.Body>
-          </Popover.Content>
-        </Popover.Positioner>
-      </Portal>
-    </Popover.Root>
+      <Popover.Root
+        open={open}
+        onOpenChange={(e) => handleClosePopover(e.open)}
+        positioning={{ sameWidth: true }}
+        autoFocus={false}
+      >
+        <Popover.Trigger asChild display="flex" width="full">
+          <InputGroup flex="1" startElement={<LuSearch />}>
+            <Input
+              {...register("search")}
+              placeholder="Search people"
+              variant="subtle"
+              autoComplete="off"
+            />
+          </InputGroup>
+        </Popover.Trigger>
+        <Portal>
+          <Popover.Positioner>
+            <Popover.Content width="auto">
+              <Popover.Arrow />
+              <Popover.Body overflowY="auto">
+                <Popover.Title
+                  fontWeight="medium"
+                  fontSize="md"
+                  marginBottom="3"
+                >
+                  Search result:
+                </Popover.Title>
+                {isLoading ? (
+                  <Spinner />
+                ) : users && users.length ? (
+                  <Peoples onClosePopover={handleClosePopover} users={users} />
+                ) : (
+                  <Text my="4" textAlign="center" fontSize="md">
+                    People not found
+                  </Text>
+                )}
+              </Popover.Body>
+            </Popover.Content>
+          </Popover.Positioner>
+        </Portal>
+      </Popover.Root>
+    </Flex>
   );
 }

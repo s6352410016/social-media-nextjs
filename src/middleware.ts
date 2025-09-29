@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import {
   IAtPayload,
   IErrorTokenPayload,
@@ -8,6 +8,7 @@ import {
 import { checkJwtGuard } from "./utils/helpers/check-jwt-guard";
 import { refreshAccessToken } from "./utils/helpers/refresh-access-token";
 import { nextRedirect } from "./utils/helpers/next-redirect";
+import { setCookies } from "./utils/helpers/set-cookies";
 
 const secretForgotPassword = new TextEncoder().encode(
   process.env.FORGOT_PASSWORD_SECRET
@@ -67,9 +68,19 @@ export async function middleware(req: NextRequest) {
     });
     if (redirect) {
       const token = req.cookies.get("refresh_token")?.value!;
-      if (!(await refreshAccessToken(token))) {
+      const newToken = await refreshAccessToken(token);
+      if (!newToken) {
         return redirect;
       }
+
+      const res = NextResponse.next();
+      setCookies(
+        ["access_token", "refresh_token"],
+        [newToken.accessToken, newToken.refreshToken],
+        res
+      );
+
+      return res;
     }
   } else if (req.nextUrl.pathname === "/") {
     const token = req.cookies.get("access_token")?.value;

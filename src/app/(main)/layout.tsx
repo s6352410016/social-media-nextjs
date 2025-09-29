@@ -8,7 +8,7 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
-    <VStack alignItems="flex-start">
+    <VStack>
       <Header />
       {children}
     </VStack>

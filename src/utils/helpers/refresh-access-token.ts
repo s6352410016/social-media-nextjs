@@ -1,3 +1,5 @@
+import { ICommonResponse, IToken } from "../types";
+
 export async function refreshAccessToken(token: string | undefined | null) {
   if (!token) {
     return false;
@@ -17,12 +19,12 @@ export async function refreshAccessToken(token: string | undefined | null) {
       return false;
     }
 
-    const data = (await res.json());
+    const data = (await res.json()) as ICommonResponse;
     if (!data.success) {
       return false;
     }
 
-    return true;
+    return data.data as IToken;
   } catch (error: unknown) {
     return false;
   }

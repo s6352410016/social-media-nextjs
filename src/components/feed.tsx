@@ -28,8 +28,10 @@ export function Feed() {
   }
 
   return (
-    <>
-      <div>feed</div>
-    </>
+    <div className="bg-rose-200 w-full h-[calc(100vh-70px)] flex justify-center">
+      <div className="fixed left-0 w-[500px] bg-green-300 h-full">side bar</div>
+      <div className="w-full">content...</div>
+      <div className="fixed right-0 w-[500px] bg-blue-300 h-full">side bar right</div>
+    </div>
   );
 }

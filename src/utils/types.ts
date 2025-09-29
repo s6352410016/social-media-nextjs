@@ -90,3 +90,8 @@ export interface INotify {
   updatedAt: Date;
   sender: Omit<IUser, "provider">;
 }
+
+export interface IToken {
+  accessToken: string;
+  refreshToken: string;
+}

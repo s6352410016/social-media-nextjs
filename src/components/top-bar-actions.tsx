@@ -5,7 +5,14 @@ import { UserAction } from "./user-action";
 
 export function TopBarActions() {
   return (
-    <HStack alignItems="center" gapX="4">
+    <HStack 
+      alignItems="center" 
+      gapX="4"
+      display="none"
+      lg={{
+        display: "flex"
+      }}
+    >
       <NotifyAction />
       <ChatAction />
       <UserAction />

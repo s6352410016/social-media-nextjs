@@ -31,11 +31,7 @@ axiosInstance.interceptors.response.use(null, async (error) => {
     if (data.success) {
       return axiosInstance(originalRequest);
     }
-
-    return Promise.reject(error);
   }
-
-  return Promise.reject(error);
 });
 
 export default axiosInstance;
