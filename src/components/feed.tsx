@@ -2,36 +2,41 @@
 
 import { useUser } from "@/hooks/use-user";
 import { useUserStore } from "@/providers/user-store-provider";
+import { Container } from "@chakra-ui/react";
 import { useEffect } from "react";
+import { SuggestPeople } from "./suggest-people";
 
 export function Feed() {
-  const { 
-    isPending,
-    isError,
-    data: user,
-    error,
-  } = useUser();
+  const { data: user } = useUser();
   const { setUser } = useUserStore((state) => state);
-  
+
   useEffect(() => {
     if (user) {
       setUser(user);
     }
   }, [user, setUser]);
 
-  if(isPending){
-    return <div>user is loading...</div>
-  }
-
-  if(isError){
-    return <div>Error: {error.message}</div>
-  }
-
   return (
-    <div className="bg-rose-200 w-full h-[calc(100vh-70px)] flex justify-center">
-      <div className="fixed left-0 w-[500px] bg-green-300 h-full">side bar</div>
-      <div className="w-full">content...</div>
-      <div className="fixed right-0 w-[500px] bg-blue-300 h-full">side bar right</div>
-    </div>
+    <Container
+      display="flex"
+      justifyContent="center"
+      height="full"
+      py="4"
+    >
+      <SuggestPeople />
+      {/* <div className="flex-1 flex flex-col h-full overflow-y-auto">
+        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
+        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
+        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
+        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
+        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
+        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
+        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
+        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
+        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
+        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
+      </div>
+      <div className="w-[300px] h-full bg-rose-200"></div> */}
+    </Container>
   );
 }

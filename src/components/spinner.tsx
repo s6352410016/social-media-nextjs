@@ -3,8 +3,8 @@ import { ImSpinner8 } from "react-icons/im";
 
 export function Spinner() {
   return (
-    <Stack 
-      justifyContent="center" 
+    <Stack
+      justifyContent="center"
       alignItems="center"
       my="1"
     >

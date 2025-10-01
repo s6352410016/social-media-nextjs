@@ -8,8 +8,8 @@ export function useFindNotifies(limit: number, activeUserId?: string) {
     queryFn: async ({ pageParam }: { pageParam: string | null }) => {
       const url =
         pageParam && activeUserId
-          ? `notification/finds?activeUserId=${activeUserId}&cursor=${pageParam}&limit=${limit}`
-          : `notification/finds?activeUserId=${activeUserId}&limit=${limit}`;
+          ? `notification/finds/${activeUserId}?&cursor=${pageParam}&limit=${limit}`
+          : `notification/finds/${activeUserId}?&limit=${limit}`;
 
       const res = await callApi("get", url);
       if (!res.success) {

@@ -8,9 +8,11 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
-    <VStack>
+    <VStack gap="0">
       <Header />
-      {children}
+      <main className="max-h-[calc(100vh-8vh)] h-[calc(100vh-8vh)] w-full bg-gray-100">
+        {children}
+      </main>
     </VStack>
   );
 }

@@ -6,7 +6,7 @@ import { TopBarActions } from "./top-bar-actions";
 export function Header() {
   return (
     <Box
-      height="70px"
+      height="8vh"
       width="full"
       py="4"
       px="16"

@@ -1,6 +1,6 @@
 "use client";
 
-import { INotify } from "@/utils/types";
+import { INotify, IUser } from "@/utils/types";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
@@ -9,7 +9,7 @@ interface SocketIoProviderProps {
 }
 
 interface SocketIoCoxtentType {
-  socket: Socket<ServerToClientEvents, any> | null;
+  socket: Socket<ServerToClientEvents, ClientToServerEvents> | null;
   isConnected: boolean;
 }
 
@@ -19,12 +19,16 @@ interface ServerToClientEvents {
   [event: `notification:${string}`]: (notifications: INotify) => void;
 }
 
+interface ClientToServerEvents {
+  connected: (activeUser: IUser | undefined) => void;
+}
+
 export function SocketIoProvider({ children }: SocketIoProviderProps) {
-  const [socket, setSocket] = useState<Socket<ServerToClientEvents, any> | null>(null);
+  const [socket, setSocket] = useState<Socket<ServerToClientEvents, ClientToServerEvents> | null>(null);
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    const socketInstance: Socket<ServerToClientEvents, any> = io(process.env.NEXT_PUBLIC_WS_URL!);
+    const socketInstance: Socket<ServerToClientEvents, ClientToServerEvents> = io(process.env.NEXT_PUBLIC_WS_URL!);
 
     socketInstance.on("connect", () => {
       setIsConnected(true);
