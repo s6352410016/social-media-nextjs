@@ -52,6 +52,7 @@ export function VerifyOtpForm() {
               name="otp"
               render={({ field }) => (
                 <PinInput.Root
+                  attached
                   value={field.value}
                   onValueChange={(e) => field.onChange(e.value)}
                   width="full"

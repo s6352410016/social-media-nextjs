@@ -24,11 +24,11 @@ export function ResendOtpLink() {
     } else {
       toast.success(formatToastMessages(res.message));
     }
-  }, []);
+  }, [email]);
 
   return (
     <HStack fontWeight="normal" gapX="0">
-      Don't have an otp? &nbsp;
+      {"Don't"} have an otp? &nbsp;
       <Button
         onClick={handleResendOtp}
         disabled={isLoading}

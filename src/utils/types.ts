@@ -44,15 +44,6 @@ export enum ProviderType {
   GITHUB,
 }
 
-export interface IProvider {
-  id: number;
-  providerType: ProviderType;
-  providerId?: string;
-  userId: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 export interface IUser {
   id: string;
   fullname: string;
@@ -63,9 +54,9 @@ export interface IUser {
   profileBackgroundUrl: string;
   info: string;
   role: Role;
+  providerType: ProviderType;
   createdAt: Date;
   updatedAt: Date;
-  provider: IProvider;
 }
 
 enum NotificationType {
@@ -88,7 +79,7 @@ export interface INotify {
   isRead: boolean;
   createdAt: Date;
   updatedAt: Date;
-  sender: Omit<IUser, "provider">;
+  sender: IUser;
 }
 
 export interface IToken {

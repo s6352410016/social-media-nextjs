@@ -27,7 +27,7 @@ export function UserAction() {
       clearUser();
       navigate("/");
     }
-  }, []);
+  }, [clearUser]);
 
   return (
     <Popover.Root positioning={{ placement: "bottom-end" }}>

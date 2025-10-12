@@ -14,7 +14,7 @@ export function People({ user, onClosePopover }: PeopleProps) {
   const handleClickPeople = useCallback((userId: string) => {
     onClosePopover(false);
     navigate(`/profile/${userId}`);
-  }, []);
+  }, [onClosePopover]);
 
   return (
     <Box

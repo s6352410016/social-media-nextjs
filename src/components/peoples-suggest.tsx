@@ -10,7 +10,7 @@ import { Spinner } from "./spinner";
 import { ItemsNotFound } from "./items-not-found";
 
 export function PeoplesSuggest() {
-  const { user } = useUserStore((state) => state);
+  const { user: activeUser } = useUserStore((state) => state);
   const { ref, inView } = useInView();
 
   const {
@@ -19,7 +19,7 @@ export function PeoplesSuggest() {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-  } = useFindUsersSuggest(10, user?.id);
+  } = useFindUsersSuggest(10, activeUser?.id);
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -45,7 +45,11 @@ export function PeoplesSuggest() {
           <Fragment key={i}>
             {group.users.length ? (
               group.users.map((user) => (
-                <PeopleSuggest key={user.id} user={user} />
+                <PeopleSuggest 
+                  key={user.id} 
+                  user={user} 
+                  activeUserId={activeUser?.id} 
+                />
               ))
             ) : (
               <ItemsNotFound title="People" />

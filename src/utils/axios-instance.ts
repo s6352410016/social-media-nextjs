@@ -32,6 +32,8 @@ axiosInstance.interceptors.response.use(null, async (error) => {
       return axiosInstance(originalRequest);
     }
   }
+
+  throw error;
 });
 
 export default axiosInstance;
