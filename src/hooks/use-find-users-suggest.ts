@@ -1,5 +1,5 @@
 import { callApi } from "@/utils/helpers/call-api";
-import { IUser } from "@/utils/types";
+import { IFollower, IUser } from "@/utils/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 export function useFindUsersSuggest(limit: number, activeUserId?: string) {
@@ -15,7 +15,10 @@ export function useFindUsersSuggest(limit: number, activeUserId?: string) {
         return Promise.reject(res);
       }
 
-      return res.data as { users: IUser[]; nextCursor: string | null };
+      return res.data as {
+        users: (IUser & { followers: IFollower[]; })[];
+        nextCursor: string | null;
+      };
     },
     enabled: !!activeUserId,
     initialPageParam: null,

@@ -4,39 +4,114 @@ import { Avatar, Flex, IconButton, Stack, Text } from "@chakra-ui/react";
 import { FaUserPlus } from "react-icons/fa6";
 import { Spinner } from "./spinner";
 import React, { useCallback, useState } from "react";
-import { IUser } from "@/utils/types";
+import { IFollower, IUser } from "@/utils/types";
 import { navigate } from "@/utils/helpers/router";
 import { callApi } from "@/utils/helpers/call-api";
 import { toast } from "react-toastify";
 import { formatToastMessages } from "@/utils/helpers/format-toast-messages";
+import { FaUserCheck } from "react-icons/fa";
+import { InfiniteData, useQueryClient } from "@tanstack/react-query";
+import isEqual from "lodash/isEqual";
 
 interface PeopleSuggestProps {
-  user: IUser;
+  user: IUser & { followers: IFollower[] };
   activeUserId?: string;
 }
 
 export function PeopleSuggest({ user, activeUserId }: PeopleSuggestProps) {
+  const queryClient = useQueryClient();
   const [disabled, setDisabled] = useState(false);
 
   const handleUserClick = useCallback(() => {
     navigate(`/profile/${user.id}`);
   }, [user.id]);
 
-  const handleFollowUser = useCallback(async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    
-    setDisabled(true);
-    await new Promise((resolve) => setTimeout(() => resolve(undefined), 500));
-    const res = await callApi("post", `user/follow/${activeUserId}/${user.id}`).finally(() => {
-      setDisabled(false);
-    });
-    if (!res.success) {
-      toast.error(formatToastMessages(res.message));
-    } else {
-      toast.success(formatToastMessages(res.message));
-    }
+  const handleFollowUser = useCallback(
+    async (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
 
-  }, [activeUserId, user.id]);
+      setDisabled(true);
+      await new Promise((resolve) => setTimeout(() => resolve(undefined), 500));
+      const res = await callApi(
+        "post",
+        `user/follow/${activeUserId}/${user.id}`
+      ).finally(() => {
+        setDisabled(false);
+      });
+      if (!res.success) {
+        toast.error(formatToastMessages(res.message));
+      } else {
+        toast.success(formatToastMessages(res.message));
+
+        const followerData = res.data as { follower: IFollower };
+
+        queryClient.setQueryData<
+          InfiniteData<{
+            users: (IUser & { followers: IFollower[] })[];
+            nextCursor: string | null;
+          }>
+        >(["usersSuggest"], (oldUsersSuggest) => {
+          if (!oldUsersSuggest) {
+            return undefined;
+          }
+
+          return {
+            ...oldUsersSuggest,
+            pages: oldUsersSuggest.pages.map((group) => {
+              return {
+                ...group,
+                users: group.users.map(
+                  (
+                    userSuggest: IUser & {
+                      followers: IFollower[];
+                    }
+                  ) => {
+                    // Ignore user not target
+                    if (userSuggest.id !== followerData.follower.followingId) {
+                      return userSuggest;
+                    }
+
+                    // UnFollow
+                    if (
+                      userSuggest.followers.some((follower) =>
+                        isEqual(follower, followerData.follower)
+                      )
+                    ) {
+                      return {
+                        ...userSuggest,
+                        followers: userSuggest.followers.filter(
+                          (follower) =>
+                            !isEqual(follower, followerData.follower)
+                        ),
+                      };
+                    }
+
+                    // Follow
+                    if (
+                      userSuggest.followers.every(
+                        (follower) => !isEqual(follower, followerData.follower)                          
+                      )
+                    ) {
+                      return {
+                        ...userSuggest,
+                        followers: [
+                          ...userSuggest.followers,
+                          followerData.follower,
+                        ],
+                      };
+                    }
+
+                    return userSuggest;
+                  }
+                ),
+              };
+            }),
+          };
+        });
+      }
+    },
+    [activeUserId, user.id]
+  );
 
   return (
     <Flex
@@ -83,7 +158,13 @@ export function PeopleSuggest({ user, activeUserId }: PeopleSuggestProps) {
         rounded="full"
         size="lg"
       >
-        <FaUserPlus color="black" />
+        {user.followers.some(
+          (follower) => follower.followerId === activeUserId
+        ) ? (
+          <FaUserCheck color="black" />
+        ) : (
+          <FaUserPlus color="black" />
+        )}
       </IconButton>
     </Flex>
   );

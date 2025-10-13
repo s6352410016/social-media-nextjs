@@ -2,10 +2,7 @@ export interface ICommonResponse {
   status: number;
   success: boolean;
   message: string | string[];
-  data?:
-    | Object
-    | string
-    | any[];
+  data?: Object | string | any[];
 }
 
 export type ApiBody<T> = T;
@@ -85,4 +82,12 @@ export interface INotify {
 export interface IToken {
   accessToken: string;
   refreshToken: string;
+}
+
+export interface IFollower {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  followerId: string;
+  followingId: string;
 }
