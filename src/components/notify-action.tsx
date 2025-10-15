@@ -4,11 +4,12 @@ import { Badge, Circle, Portal } from "@chakra-ui/react";
 import { Popover } from "@chakra-ui/react";
 import { FaBell } from "react-icons/fa";
 import { Notifies } from "./notifies";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { INotify } from "@/utils/types";
 import { useReadNotify } from "@/hooks/use-read-notify";
 
 export function NotifyAction() {
+  const [open, setOpen] = useState(false);
   const [unReadNotify, setUnReadNotify] = useState<INotify[]>([]);
 
   const mutation = useReadNotify();
@@ -18,13 +19,26 @@ export function NotifyAction() {
   }, []);
 
   const handleReadNotify = useCallback(() => {
-    unReadNotify.forEach((notify) => {
-      mutation.mutate(notify.id);
-    });
-  }, [unReadNotify, mutation]);
+    if (unReadNotify.length) {
+      unReadNotify.forEach((notify) => {
+        mutation.mutate(notify.id);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (open && unReadNotify.length) {
+      unReadNotify.forEach((notify) => {
+        mutation.mutate(notify.id);
+      });
+    }
+  }, [open, unReadNotify]);
 
   return (
-    <Popover.Root positioning={{ placement: "bottom-end" }}>
+    <Popover.Root
+      onOpenChange={(e) => setOpen(e.open)}
+      positioning={{ placement: "bottom-end" }}
+    >
       <Popover.Trigger asChild>
         <Circle
           onClick={handleReadNotify}

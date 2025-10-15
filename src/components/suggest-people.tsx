@@ -3,8 +3,8 @@ import { PeoplesSuggest } from "./peoples-suggest";
 
 export function SuggestPeople() {
   return (
-    <Box 
-      borderRadius="lg" 
+    <Box
+      borderRadius="lg"
       width="400px"
       height="full"
       backgroundColor="white"
@@ -14,21 +14,14 @@ export function SuggestPeople() {
       alignItems="center"
       gapY="3"
       xl={{
-        display: "flex"
+        display: "flex",
       }}
     >
-      <Text 
-        textStyle="lg" 
-        fontWeight="medium"
-      >
+      <Text textStyle="lg" fontWeight="medium">
         Suggest people
       </Text>
       <Separator width="full" />
-      <Box 
-        overflowY="auto" 
-        flex="1"
-        width="full"
-      >
+      <Box overflowY="auto" flex="1" width="full">
         <PeoplesSuggest />
       </Box>
     </Box>

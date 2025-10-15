@@ -17,7 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { LuSearch } from "react-icons/lu";
 import { People } from "./people";
-import { useFindUsers } from "@/hooks/use-find-users";
+import { useUsers } from "@/hooks/use-users";
 import { useUserStore } from "@/providers/user-store-provider";
 import { Spinner } from "./spinner";
 import { Fragment, useCallback, useEffect, useState } from "react";
@@ -49,7 +49,7 @@ export function SearchPeople() {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-  } = useFindUsers(values, 10, user?.id);
+  } = useUsers(values, 10, user?.id);
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -105,7 +105,8 @@ export function SearchPeople() {
                 ) : !users?.pages.length ? (
                   <ItemsNotFound title="People" />
                 ) : (
-                  users?.pages.map((group, i) => (
+                  users &&
+                  users.pages.map((group, i) => (
                     <Fragment key={i}>
                       {group.users.length ? (
                         group.users.map((user) => (

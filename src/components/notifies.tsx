@@ -1,7 +1,7 @@
 "use client";
 
 import { useInView } from "react-intersection-observer";
-import { useFindNotifies } from "@/hooks/use-find-notifies";
+import { useNotifies } from "@/hooks/use-notifies";
 import { Box, Flex } from "@chakra-ui/react";
 import { Spinner } from "./spinner";
 import { Fragment, useEffect } from "react";
@@ -10,6 +10,7 @@ import { useNotifySocket } from "@/hooks/use-notify-socket";
 import { INotify } from "@/utils/types";
 import { Notify } from "./notify";
 import { ItemsNotFound } from "./items-not-found";
+import { NotifiesSkeleton } from "./notifies-skeleton";
 
 interface NotifiesProps {
   onNotifyCount: (notify: INotify[]) => void;
@@ -26,7 +27,8 @@ export function Notifies({ onNotifyCount }: NotifiesProps) {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-  } = useFindNotifies(10, user?.id);
+    status,
+  } = useNotifies(10, user?.id);
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -45,7 +47,9 @@ export function Notifies({ onNotifyCount }: NotifiesProps) {
 
   return (
     <Box maxH="400px" overflowY="auto">
-      {isLoading ? (
+      {status === "pending" ? (
+        <NotifiesSkeleton amount={4} />
+      ) : isLoading ? (
         <Flex
           width="full"
           height="full"
@@ -54,10 +58,9 @@ export function Notifies({ onNotifyCount }: NotifiesProps) {
         >
           <Spinner />
         </Flex>
-      ) : !notifies?.pages.length ? (
-        <ItemsNotFound title="Notify" />
       ) : (
-        notifies?.pages.map((group, i) => (
+        notifies &&
+        notifies.pages.map((group, i) => (
           <Fragment key={i}>
             {group.notifies.length ? (
               group.notifies.map((notify) => (

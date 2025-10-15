@@ -31,7 +31,7 @@ export function PeopleSuggest({ user, activeUserId }: PeopleSuggestProps) {
       e.stopPropagation();
 
       setDisabled(true);
-      await new Promise((resolve) => setTimeout(() => resolve(undefined), 500));
+      await new Promise((resolve) => setTimeout(() => resolve(undefined), 300));
       const res = await callApi(
         "post",
         `user/follow/${activeUserId}/${user.id}`

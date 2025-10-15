@@ -2,7 +2,7 @@ import { callApi } from "@/utils/helpers/call-api";
 import { INotify } from "@/utils/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-export function useFindNotifies(limit: number, activeUserId?: string) {
+export function useNotifies(limit: number, activeUserId?: string) {
   return useInfiniteQuery({
     queryKey: ["notifies"],
     queryFn: async ({ pageParam }: { pageParam: string | null }) => {
@@ -11,6 +11,7 @@ export function useFindNotifies(limit: number, activeUserId?: string) {
           ? `notification/finds/${activeUserId}?&cursor=${pageParam}&limit=${limit}`
           : `notification/finds/${activeUserId}?&limit=${limit}`;
 
+      await new Promise((resolve) => setTimeout(() => resolve(undefined), 300));     
       const res = await callApi("get", url);
       if (!res.success) {
         return Promise.reject(res);

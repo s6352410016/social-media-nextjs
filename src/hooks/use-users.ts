@@ -2,7 +2,7 @@ import { callApi } from "@/utils/helpers/call-api";
 import { IUser } from "@/utils/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-export function useFindUsers(search: string, limit: number, activeUserId?: string) {
+export function useUsers(search: string, limit: number, activeUserId?: string) {
   return useInfiniteQuery({
     queryKey: ["users", search],
     queryFn: async ({ pageParam }: { pageParam: string | null }) => {
@@ -10,6 +10,7 @@ export function useFindUsers(search: string, limit: number, activeUserId?: strin
         ? `user/find-by-fullname/${activeUserId}?fullname=${search}&cursor=${pageParam}&limit=${limit}`
         : `user/find-by-fullname/${activeUserId}?fullname=${search}&limit=${limit}`;
 
+      await new Promise((resolve) => setTimeout(() => resolve(undefined), 300));  
       const res = await callApi("get", url);
       if (!res.success) {
         return Promise.reject(res);

@@ -43,7 +43,6 @@ export function useReadNotify() {
               notify.id === notifyId ? { ...notify, isRead: true } : notify
             ),
           })),
-          pageParams: oldNotifies.pageParams,
         };
       });
 
@@ -70,7 +69,6 @@ export function useReadNotify() {
               notify.id === notifyData.id ? notifyData : notify
             ),
           })),
-          pageParams: oldNotifies.pageParams,
         };
       });
     },

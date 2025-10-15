@@ -2,12 +2,13 @@
 
 import { useUserStore } from "@/providers/user-store-provider";
 import { PeopleSuggest } from "./people-suggest";
-import { useFindUsersSuggest } from "@/hooks/use-find-users-suggest";
+import { useUsersSuggest } from "@/hooks/use-users-suggest";
 import { useInView } from "react-intersection-observer";
 import { Fragment, useEffect } from "react";
 import { Box, Flex } from "@chakra-ui/react";
 import { Spinner } from "./spinner";
 import { ItemsNotFound } from "./items-not-found";
+import { UsersSkeleton } from "./users-skeleton";
 
 export function PeoplesSuggest() {
   const { user: activeUser } = useUserStore((state) => state);
@@ -19,7 +20,8 @@ export function PeoplesSuggest() {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-  } = useFindUsersSuggest(10, activeUser?.id);
+    status,
+  } = useUsersSuggest(10, activeUser?.id);
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -27,36 +29,41 @@ export function PeoplesSuggest() {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
+  if (status === "pending") {
+    return <UsersSkeleton amount={9} />;
+  }
+
+  if (isLoading) {
+    return (
+      <Flex
+        width="full"
+        height="full"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Spinner />
+      </Flex>
+    );
+  }
+
   return (
     <>
-      {isLoading ? (
-        <Flex
-          width="full"
-          height="full"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Spinner />
-        </Flex>
-      ) : !users?.pages.length ? (
-        <ItemsNotFound title="People" />
-      ) : (
-        users?.pages.map((group, i) => (
+      {users &&
+        users.pages.map((group, i) => (
           <Fragment key={i}>
             {group.users.length ? (
               group.users.map((user) => (
-                <PeopleSuggest 
-                  key={user.id} 
-                  user={user} 
-                  activeUserId={activeUser?.id} 
+                <PeopleSuggest
+                  key={user.id}
+                  user={user}
+                  activeUserId={activeUser?.id}
                 />
               ))
             ) : (
               <ItemsNotFound title="People" />
             )}
           </Fragment>
-        ))
-      )}
+        ))}
 
       {isFetchingNextPage && <Spinner />}
       <Box ref={ref} />
