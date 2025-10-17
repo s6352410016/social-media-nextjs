@@ -91,3 +91,7 @@ export interface IFollower {
   followerId: string;
   followingId: string;
 }
+
+export type UsersTemp = (IUser & {
+  active: boolean;
+})[];

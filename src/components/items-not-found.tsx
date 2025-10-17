@@ -1,20 +1,31 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { formatString } from "@/utils/helpers/format-string";
+import { EmptyState, VStack } from "@chakra-ui/react";
+import { FaPeopleGroup } from "react-icons/fa6";
+import { MdNotificationsActive } from "react-icons/md";
 
 interface ItemsNotFoundProps {
-  title?: string;
+  title?: "user" | "people" | "notify";
 }
 
 export function ItemsNotFound({ title }: ItemsNotFoundProps) {
   return (
-    <Flex
-      justifyContent="center"
-      alignItems="center"
-      height="full"
-      width="full"
-    >
-      <Text my="4" textAlign="center" fontSize="md">
-        {title ?? "Items"} not found
-      </Text>
-    </Flex>
+    <EmptyState.Root>
+      <EmptyState.Content>
+        <EmptyState.Indicator>
+          {title === "notify" ? (
+            <MdNotificationsActive />
+          ) : (
+            <FaPeopleGroup />
+          )}
+        </EmptyState.Indicator>
+        <VStack textAlign="center">
+          {title !== "user" ? (
+            <EmptyState.Title>Your {title} is empty</EmptyState.Title>
+          ) : (
+            <EmptyState.Title>{formatString(title)} not found</EmptyState.Title>
+          )}
+        </VStack>
+      </EmptyState.Content>
+    </EmptyState.Root>
   );
 }

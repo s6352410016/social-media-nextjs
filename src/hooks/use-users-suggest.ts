@@ -10,14 +10,14 @@ export function useUsersSuggest(limit: number, activeUserId?: string) {
         ? `user/finds/${activeUserId}?cursor=${pageParam}&limit=${limit}`
         : `user/finds/${activeUserId}?limit=${limit}`;
 
-      await new Promise((resolve) => setTimeout(() => resolve(undefined), 300));    
+      await new Promise((resolve) => setTimeout(() => resolve(undefined), 300));
       const res = await callApi("get", url);
       if (!res.success) {
         return Promise.reject(res);
       }
 
       return res.data as {
-        users: (IUser & { followers: IFollower[]; })[];
+        users: (IUser & { followers: IFollower[]; active?: boolean })[];
         nextCursor: string | null;
       };
     },

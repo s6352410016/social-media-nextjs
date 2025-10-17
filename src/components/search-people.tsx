@@ -100,10 +100,10 @@ export function SearchPeople() {
                     justifyContent="center"
                     alignItems="center"
                   >
-                    <Spinner />
+                    <Spinner size="lg" />
                   </Flex>
                 ) : !users?.pages.length ? (
-                  <ItemsNotFound title="People" />
+                  <ItemsNotFound title="user" />
                 ) : (
                   users &&
                   users.pages.map((group, i) => (
@@ -117,13 +117,13 @@ export function SearchPeople() {
                           />
                         ))
                       ) : (
-                        <ItemsNotFound title="People" />
+                        <ItemsNotFound title="user" />
                       )}
                     </Fragment>
                   ))
                 )}
 
-                {isFetchingNextPage && <Spinner />}
+                {isFetchingNextPage && <Spinner size="lg" />}
                 <Box ref={ref} />
               </Popover.Body>
             </Popover.Content>

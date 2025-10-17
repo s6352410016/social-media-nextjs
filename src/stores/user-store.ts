@@ -3,17 +3,20 @@ import { createStore } from "zustand/vanilla";
 
 export type UserState = {
   user: IUser | null;
+  isLoading: boolean;
 }
 
 export type UserAction = {
   setUser: (user: IUser) => void;
   clearUser: () => void;
+  setLoading: (isLoading: boolean) => void;
 }
 
 export type UserStore = UserState & UserAction;
 
 export const defaultInitState: UserState = {
   user: null,
+  isLoading: false,
 }
 
 export function createUserStore(
@@ -23,5 +26,6 @@ export function createUserStore(
     ...initState,
     setUser: (user: IUser) => set({ user }),
     clearUser: () => set({ user: null }),
+    setLoading: (isLoading) => set({ isLoading }),
   }));
 }

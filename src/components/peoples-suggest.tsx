@@ -60,12 +60,12 @@ export function PeoplesSuggest() {
                 />
               ))
             ) : (
-              <ItemsNotFound title="People" />
+              <ItemsNotFound title="people" />
             )}
           </Fragment>
         ))}
 
-      {isFetchingNextPage && <Spinner />}
+      {isFetchingNextPage && <Spinner size="lg" />}
       <Box ref={ref} />
     </>
   );

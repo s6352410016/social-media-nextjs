@@ -9,17 +9,18 @@ import {
 
 interface UsersSkeletonProps {
   amount?: number;
+  height?: string;
 }
 
-export function UsersSkeleton({ amount = 1 }: UsersSkeletonProps) {
+export function UsersSkeleton({ amount = 1, height = "70px" }: UsersSkeletonProps) {
   return (
-    <VStack gapY="3.5">
+    <VStack gapY="3.5" width="full">
       <For each={[...Array(amount).keys()]}>
         {(item) => (
           <HStack 
             key={item} 
             gap="5"
-            height="70px" 
+            height={height}
             width="full"
           >
             <SkeletonCircle size="12" />

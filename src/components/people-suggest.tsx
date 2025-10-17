@@ -149,7 +149,7 @@ export function PeopleSuggest({ user, activeUserId }: PeopleSuggestProps) {
         onClick={handleFollowUser}
         loading={disabled}
         disabled={disabled}
-        spinner={<Spinner />}
+        spinner={<Spinner size="md" />}
         bg="gray.200"
         _hover={{
           backgroundColor: "gray.300",

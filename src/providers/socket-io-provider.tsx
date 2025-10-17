@@ -13,22 +13,31 @@ interface SocketIoCoxtentType {
   isConnected: boolean;
 }
 
-const SocketIoContext = createContext<SocketIoCoxtentType | undefined>(undefined);
+const SocketIoContext = createContext<SocketIoCoxtentType | undefined>(
+  undefined
+);
 
 interface ServerToClientEvents {
   [event: `notification:${string}`]: (notifications: INotify) => void;
+  usersActive: (
+    users: (IUser & { active: boolean })[]
+  ) => void;
 }
 
 interface ClientToServerEvents {
-  connected: (activeUser: IUser | undefined) => void;
+  connected: (activeUser: IUser) => void;
 }
 
 export function SocketIoProvider({ children }: SocketIoProviderProps) {
-  const [socket, setSocket] = useState<Socket<ServerToClientEvents, ClientToServerEvents> | null>(null);
+  const [socket, setSocket] = useState<Socket<
+    ServerToClientEvents,
+    ClientToServerEvents
+  > | null>(null);
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    const socketInstance: Socket<ServerToClientEvents, ClientToServerEvents> = io(process.env.NEXT_PUBLIC_WS_URL!);
+    const socketInstance: Socket<ServerToClientEvents, ClientToServerEvents> =
+      io(process.env.NEXT_PUBLIC_WS_URL!);
 
     socketInstance.on("connect", () => {
       setIsConnected(true);
@@ -38,11 +47,11 @@ export function SocketIoProvider({ children }: SocketIoProviderProps) {
       setIsConnected(false);
     });
 
-    setSocket(socketInstance)
+    setSocket(socketInstance);
 
     return () => {
       socketInstance.disconnect();
-    }
+    };
   }, []);
 
   return (
@@ -54,9 +63,9 @@ export function SocketIoProvider({ children }: SocketIoProviderProps) {
 
 export function useSocketIo() {
   const socket = useContext(SocketIoContext);
-  if(!socket){
+  if (!socket) {
     throw new Error(`useSocketIo must be used within SocketIoProvider`);
   }
-  
+
   return socket;
 }

@@ -17,17 +17,17 @@ export function UserAction() {
     if (id) {
       navigate(`/profile/${id}`);
     }
-  }, []);
+  }, [navigate]);
 
   const handleLogout = useCallback(async () => {
     setDisabled(true);
     const data = await callApi("post", "auth/logout");
     setDisabled(false);
     if (data.success || !data.success) {
-      clearUser();
       navigate("/");
+      setTimeout(() => clearUser(), 500);
     }
-  }, [clearUser]);
+  }, [clearUser, navigate]);
 
   return (
     <Popover.Root positioning={{ placement: "bottom-end" }}>

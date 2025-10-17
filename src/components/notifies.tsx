@@ -56,7 +56,7 @@ export function Notifies({ onNotifyCount }: NotifiesProps) {
           justifyContent="center"
           alignItems="center"
         >
-          <Spinner />
+          <Spinner size="lg" />
         </Flex>
       ) : (
         notifies &&
@@ -67,7 +67,7 @@ export function Notifies({ onNotifyCount }: NotifiesProps) {
                 <Notify key={notify.id} notify={notify} />
               ))
             ) : (
-              <ItemsNotFound title="Notify" />
+              <ItemsNotFound title="notify" />
             )}
           </Fragment>
         ))
