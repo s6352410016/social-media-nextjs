@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-const refreshInstance = axios.create({
+export const refreshInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
 });

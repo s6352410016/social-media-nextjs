@@ -1,8 +1,13 @@
 "use client";
 
-import { INotify, IUser } from "@/utils/types";
+import { ICommonResponse, INotify, IUser } from "@/utils/types";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
+import { toast } from "react-toastify";
+import { formatToastMessages } from "@/utils/helpers/format-toast-messages";
+import { refreshInstance } from "@/utils/axios-instance";
+import { isAxiosError } from "axios";
+import { navigate } from "@/utils/helpers/router";
 
 interface SocketIoProviderProps {
   children: React.ReactNode;
@@ -19,9 +24,8 @@ const SocketIoContext = createContext<SocketIoCoxtentType | undefined>(
 
 interface ServerToClientEvents {
   [event: `notification:${string}`]: (notifications: INotify) => void;
-  usersActive: (
-    users: (IUser & { active: boolean })[]
-  ) => void;
+  usersActive: (users: (IUser & { active: boolean })[]) => void;
+  exception: (error: { success: boolean; message: string }) => void;
 }
 
 interface ClientToServerEvents {
@@ -37,7 +41,9 @@ export function SocketIoProvider({ children }: SocketIoProviderProps) {
 
   useEffect(() => {
     const socketInstance: Socket<ServerToClientEvents, ClientToServerEvents> =
-      io(process.env.NEXT_PUBLIC_WS_URL!);
+      io(process.env.NEXT_PUBLIC_WS_URL!, {
+        withCredentials: true,
+      });
 
     socketInstance.on("connect", () => {
       setIsConnected(true);
@@ -45,6 +51,26 @@ export function SocketIoProvider({ children }: SocketIoProviderProps) {
 
     socketInstance.on("disconnect", () => {
       setIsConnected(false);
+    });
+
+    socketInstance.on("connect_error", (error) => {
+      toast.error(formatToastMessages(error.message));
+    });
+
+    socketInstance.on("exception", async (errorException) => {
+      if (!errorException.success) {
+        try {
+          await refreshInstance.post<ICommonResponse>("auth/refresh-token");
+        } catch (error: unknown) {
+          if (isAxiosError<ICommonResponse>(error)) {
+            if (error.response?.data.status === 401) {
+              navigate("/");
+              toast.error(formatToastMessages(errorException.message));
+              return;
+            }
+          }
+        }
+      }
     });
 
     setSocket(socketInstance);
