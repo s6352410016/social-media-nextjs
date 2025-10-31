@@ -5,13 +5,13 @@ import { FaUserPlus } from "react-icons/fa6";
 import { Spinner } from "./spinner";
 import React, { useCallback, useState } from "react";
 import { IFollower, IUser } from "@/utils/types";
-import { navigate } from "@/utils/helpers/router";
 import { callApi } from "@/utils/helpers/call-api";
 import { toast } from "react-toastify";
 import { formatToastMessages } from "@/utils/helpers/format-toast-messages";
 import { FaUserCheck } from "react-icons/fa";
 import { InfiniteData, useQueryClient } from "@tanstack/react-query";
 import isEqual from "lodash/isEqual";
+import { useNavigateUser } from "@/hooks/use-navigate-user";
 
 interface PeopleSuggestProps {
   user: IUser & { followers: IFollower[] };
@@ -22,9 +22,7 @@ export function PeopleSuggest({ user, activeUserId }: PeopleSuggestProps) {
   const queryClient = useQueryClient();
   const [disabled, setDisabled] = useState(false);
 
-  const handleUserClick = useCallback(() => {
-    navigate(`/profile/${user.id}`);
-  }, [user.id]);
+  const handleUserClick = useNavigateUser(user);
 
   const handleFollowUser = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {

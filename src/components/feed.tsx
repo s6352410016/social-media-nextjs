@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { SuggestPeople } from "./suggest-people";
 import { UserStatusOverview } from "./user-status-overview";
 import { useSocketIo } from "@/providers/socket-io-provider";
+import { PostOverview } from "./post-overview";
 
 export function Feed() {
   const { socket } = useSocketIo();
@@ -35,25 +36,16 @@ export function Feed() {
 
   return (
     <Container
+      fluid
       display="flex"
       justifyContent="center"
       height="full"
       py="4"
       gapX="4"
+      px="56"
     >
       <SuggestPeople />
-      {/* <div className="flex-1 flex flex-col h-full overflow-y-auto">
-        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
-        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
-        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
-        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
-        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
-        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
-        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
-        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
-        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
-        <div className="shrink-0 w-full h-[350px] bg-amber-300 !mb-3">content...</div>
-      </div>*/}
+      <PostOverview />
       <UserStatusOverview />
     </Container>
   );

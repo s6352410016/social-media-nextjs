@@ -1,6 +1,6 @@
 "use client";
 
-import { navigate } from "@/utils/helpers/router";
+import { useNavigateUser } from "@/hooks/use-navigate-user";
 import { IUser } from "@/utils/types";
 import { Avatar, Box, HStack, Stack, Text } from "@chakra-ui/react";
 import { useCallback } from "react";
@@ -11,9 +11,11 @@ interface PeopleProps {
 }
 
 export function People({ user, onClosePopover }: PeopleProps) {
-  const handleClickPeople = useCallback((userId: string) => {
+  const handleUserClick = useNavigateUser(user);
+
+  const handleClickPeople = useCallback(() => {
     onClosePopover(false);
-    navigate(`/profile/${userId}`);
+    handleUserClick();
   }, [onClosePopover]);
 
   return (
@@ -27,7 +29,7 @@ export function People({ user, onClosePopover }: PeopleProps) {
         transitionDuration: "slow",
       }}
     >
-      <HStack onClick={() => handleClickPeople(user.id)} gapX="3" my="2">
+      <HStack onClick={handleClickPeople} gapX="3" my="2">
         {user.profileUrl ? (
           <Avatar.Root size="xl">
             <Avatar.Fallback name={user.fullname} />

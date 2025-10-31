@@ -1,35 +1,25 @@
 "use client";
 
 import { useUserStore } from "@/providers/user-store-provider";
-import { navigate } from "@/utils/helpers/router";
 import { Avatar, Flex, Stack, Text } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
 import { UsersSkeleton } from "./users-skeleton";
+import { useNavigateUser } from "@/hooks/use-navigate-user";
+import { useLoadingComponent } from "@/hooks/use-loading-component";
 
 export function ActiveUserCard() {
-  const [loadingComponent, setLoadingComponent] = useState(true);
-
   const { user, isLoading } = useUserStore((state) => state);
 
-  const handleActiveUserClick = useCallback(() => {
-    navigate(`/profile/${user?.id}`);
-  }, [navigate, user?.id]);
+  const handleUserClick = useNavigateUser(user);
 
-  useEffect(() => {
-    if (!isLoading) {
-      setLoadingComponent(false);
-    }
-  }, [isLoading]);
+  const loadingComponent = useLoadingComponent(isLoading);
 
   if (loadingComponent || isLoading) {
     return (
       <Flex
-        onClick={handleActiveUserClick}
         alignItems="center"
         p="4"
         borderRadius="lg"
         backgroundColor="white"
-        cursor="pointer"
         width="full"
         height="80px"
       >
@@ -42,7 +32,7 @@ export function ActiveUserCard() {
     <>
       {user && (
         <Flex
-          onClick={handleActiveUserClick}
+          onClick={handleUserClick}
           alignItems="center"
           p="4"
           borderRadius="lg"
