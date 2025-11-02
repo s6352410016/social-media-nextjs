@@ -76,7 +76,12 @@ export function VerifyOtpForm() {
               )}
             />
           </Field.Root>
-          <Button disabled={isSubmitting} type="submit" width="full">
+          <Button
+            loading={isSubmitting} 
+            disabled={isSubmitting} 
+            type="submit" 
+            width="full"
+          >
             Submit
           </Button>
         </VStack>

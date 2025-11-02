@@ -32,7 +32,7 @@ const queryClient = new QueryClient({
     },
   }),
   mutationCache: new MutationCache({
-    onError: (error, _, __, mutation) => {
+    onError: (error) => {
       const errorData = error as unknown as ICommonResponse;
       if (errorData.status === 401 && !errorData.success) {
         navigate("/");

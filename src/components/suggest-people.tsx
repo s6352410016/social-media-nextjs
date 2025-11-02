@@ -13,9 +13,7 @@ export function SuggestPeople() {
       flexDirection="column"
       alignItems="center"
       gapY="3"
-      xl={{
-        display: "flex",
-      }}
+      className="2xl:flex"
     >
       <Text textStyle="lg" fontWeight="medium">
         Suggest people

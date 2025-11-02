@@ -12,7 +12,6 @@ import {
   Input,
   SkeletonCircle,
 } from "@chakra-ui/react";
-import { FileUploader } from "./upload/multi-file";
 import { EmojiPicker } from "./emoji-picker";
 import { useForm } from "react-hook-form";
 import {
@@ -22,25 +21,17 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useRef, useState } from "react";
 import { EmojiClickData } from "emoji-picker-react";
-import { useCreateContentStore } from "@/providers/create-content-store-provider";
-import { useUploader } from "./upload/uploader-provider";
-import { callApi } from "@/utils/helpers/call-api";
-import { toast } from "react-toastify";
-import { formatToastMessages } from "@/utils/helpers/format-toast-messages";
 
 export function CreatePost() {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
 
-  const { setContext } = useCreateContentStore((state) => state);
   const { user, isLoading } = useUserStore((state) => state);
 
   const handleUserClick = useNavigateUser(user);
 
   const loadingComponent = useLoadingComponent(isLoading);
-
-  const { fileStates, uploadFiles } = useUploader();
 
   const {
     register,
@@ -60,36 +51,7 @@ export function CreatePost() {
 
   const content = watch("message");
 
-  const onSubmit = handleSubmit(async ({ message }) => {
-    if(!user){
-      return;
-    }
-
-    if(!fileStates.length && message){
-      const res = await callApi<CreateContentSchema>(
-        "post",
-        `post/create/${user.id}`,
-        {
-          message,
-        },
-      );
-      if(res.success){
-        reset();
-        toast.success(formatToastMessages(res.message));
-      }else{
-        toast.error(formatToastMessages(res.message));
-      }
-
-      return;
-    }
-
-    // TODO: upload file to provider
-    setContext({
-      type: "POST",
-      content: message,
-    });
-    uploadFiles();
-  });
+  const onSubmit = handleSubmit(async ({ message }) => {});
 
   const handleEmojiSelect = ({ emoji }: EmojiClickData) => {
     const input = inputRef.current;
@@ -114,7 +76,7 @@ export function CreatePost() {
     input.selectionStart = cursorPosition;
     input.selectionEnd = cursorPosition;
     setFocus("message");
-  };
+  }
 
   const handleOpenEmojiPicker = useCallback((open: boolean) => {
     const focused = document.activeElement === inputRef.current;
@@ -168,22 +130,11 @@ export function CreatePost() {
             isOpenEmojiPicker={openEmojiPicker}
           />
         </HStack>
-        <FileUploader
-          maxFiles={10}
-          accept={{
-            "image/png": [],
-            "image/jpeg": [],
-            "image/webp": [],
-            "video/mp4": [],
-            "video/webm": [],
-            "video/ogg": [],
-          }}
-        />
         <Flex justifyContent="flex-end">
-          <Button 
+          <Button
             loading={isSubmitting}
-            disabled={isSubmitting} 
-            type="submit" 
+            disabled={isSubmitting}
+            type="submit"
             width="150px"
           >
             Submit

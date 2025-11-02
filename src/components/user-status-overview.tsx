@@ -11,9 +11,7 @@ export function UserStatusOverview() {
       flexDirection="column"
       alignItems="center"
       gapY="4"
-      xl={{
-        display: "flex",
-      }}
+      className="2xl:flex"
     >
       <ActiveUserCard />
       <PeopleStatus />

@@ -7,7 +7,6 @@ import { UserStoreProvider } from "@/providers/user-store-provider";
 import { TanStackQueryClientProvider } from "@/providers/tanstack-query-client-provider";
 import { RouterProvider } from "@/providers/router-provider";
 import { SocketIoProvider } from "@/providers/socket-io-provider";
-import { EdgeStoreUploaderProvider } from "@/providers/edge-store-uploader-provider";
 import { CreateContentStoreProvider } from "@/providers/create-content-store-provider";
 import "./globals.css";
 
@@ -44,9 +43,7 @@ export default function RootLayout({
                   <Provider>
                     <ToastContainer position="top-center" />
                     <RouterProvider />
-                    <EdgeStoreUploaderProvider>
-                      {children}
-                    </EdgeStoreUploaderProvider>
+                    {children}
                   </Provider>
                 </CreateContentStoreProvider>
               </UserStoreProvider>

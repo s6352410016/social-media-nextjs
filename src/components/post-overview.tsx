@@ -1,14 +1,14 @@
-import { VStack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { CreatePost } from "./create-post";
 
 export function PostOverview() {
   return (
-    <VStack
+    <Stack
       flex="1"
-      height="full"
+      width="full"
       gapY="4"
     >
       <CreatePost />
-    </VStack>
+    </Stack>
   );
 }

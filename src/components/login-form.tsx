@@ -69,7 +69,11 @@ export function LoginForm() {
           </Field.Root>
         </Fieldset.Content>
 
-        <Button disabled={isSubmitting} type="submit">
+        <Button
+          loading={isSubmitting}
+          disabled={isSubmitting} 
+          type="submit"
+         >
           Submit
         </Button>
       </Fieldset.Root>

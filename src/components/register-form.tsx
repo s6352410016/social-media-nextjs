@@ -80,7 +80,13 @@ export function RegisterForm() {
           </Field.Root>
         </Fieldset.Content>
 
-        <Button disabled={isSubmitting} type="submit">Submit</Button>
+        <Button 
+          loading={isSubmitting}
+          disabled={isSubmitting} 
+          type="submit"
+        >
+          Submit
+        </Button>
       </Fieldset.Root>
     </form>
   );
