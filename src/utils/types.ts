@@ -95,3 +95,24 @@ export interface IFollower {
 export type UsersTemp = (IUser & {
   active: boolean;
 })[];
+
+export interface ILike {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  postId: string | null;
+  commentId: string | null;
+}
+
+export interface IPost {
+  message: string | null;
+  userId: string;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  parentId: string | null;
+  user: IUser;
+  likes: ILike[];
+  filesUrl?: string[];
+}
