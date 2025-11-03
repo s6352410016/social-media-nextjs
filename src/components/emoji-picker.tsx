@@ -1,7 +1,10 @@
 "use client";
 
 import { Circle, Popover, Portal } from "@chakra-ui/react";
-import { EmojiClickData } from "emoji-picker-react";
+import { RefObject } from "react";
+import { UseFormReturn } from "react-hook-form";
+import { useHandleEmojiSelect } from "@/hooks/use-handle-emoji-select";
+import { usePopoverControl } from "@/hooks/use-popover-control";
 import dynamic from "next/dynamic";
 
 const Picker = dynamic(
@@ -12,20 +15,28 @@ const Picker = dynamic(
 );
 
 interface EmojiPickerProps {
-  onEmojiSelect: (emoji: EmojiClickData) => void;
-  onOpenEmojiPicker: (open: boolean) => void;
-  isOpenEmojiPicker: boolean;
+  inputRef: RefObject<HTMLInputElement | null>;
+  useFormReturn: UseFormReturn;
+  valueKey: string;
 }
 
 export function EmojiPicker({
-  onEmojiSelect,
-  onOpenEmojiPicker,
-  isOpenEmojiPicker,
+  inputRef,
+  useFormReturn,
+  valueKey,
 }: EmojiPickerProps) {
+  const { openEmojiPicker, handleOpenEmojiPicker } = usePopoverControl(inputRef);
+
+  const handleEmojiSelect = useHandleEmojiSelect(
+    inputRef,
+    useFormReturn,
+    valueKey,
+  );
+
   return (
     <Popover.Root
-      open={isOpenEmojiPicker}
-      onOpenChange={(e) => onOpenEmojiPicker(e.open)}
+      open={openEmojiPicker}
+      onOpenChange={(e) => handleOpenEmojiPicker(e.open)}
       positioning={{ placement: "bottom-end" }}
     >
       <Popover.Trigger asChild>
@@ -47,7 +58,9 @@ export function EmojiPicker({
         <Popover.Positioner>
           <Popover.Content>
             <Popover.Arrow />
-            <Picker onEmojiClick={(e) => onEmojiSelect(e)} />
+            <Picker
+              onEmojiClick={(e) => handleEmojiSelect(e)}
+            />
           </Popover.Content>
         </Popover.Positioner>
       </Portal>

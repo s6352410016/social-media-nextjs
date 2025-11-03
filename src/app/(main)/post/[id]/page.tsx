@@ -1,7 +1,6 @@
-import { Test } from "@/components/test";
-
-export default function PostByIdPage() {
+export default async function PostByIdPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   return (
-    <Test />
+    <div>post by id page</div>
   );
 }

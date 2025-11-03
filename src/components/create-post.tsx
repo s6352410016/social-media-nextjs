@@ -19,13 +19,10 @@ import {
   CreateContentSchema,
 } from "@/utils/validations/create-content";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useRef, useState } from "react";
-import { EmojiClickData } from "emoji-picker-react";
+import { useRef } from "react";
 
 export function CreatePost() {
   const inputRef = useRef<HTMLInputElement | null>(null);
-
-  const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
 
   const { user, isLoading } = useUserStore((state) => state);
 
@@ -33,59 +30,23 @@ export function CreatePost() {
 
   const loadingComponent = useLoadingComponent(isLoading);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting },
-    reset,
-    watch,
-    setValue,
-    getValues,
-    setFocus,
-  } = useForm<CreateContentSchema>({
+  const form = useForm<CreateContentSchema>({
     resolver: zodResolver(createContentSchema),
     defaultValues: {
       message: "",
     },
   });
 
+  const {
+    watch,
+    handleSubmit,
+    register,
+    formState: { isSubmitting },
+  } = form;
+
   const content = watch("message");
 
   const onSubmit = handleSubmit(async ({ message }) => {});
-
-  const handleEmojiSelect = ({ emoji }: EmojiClickData) => {
-    const input = inputRef.current;
-    // เอาค่าล่าสุดจาก form
-    const currentContent = getValues("message");
-
-    if (!input) {
-      return;
-    }
-
-    const selectionStart = input.selectionStart ?? 0;
-    const selectionEnd = input.selectionEnd ?? 0;
-
-    const start = currentContent?.substring(0, selectionStart);
-    const end = currentContent?.substring(selectionEnd);
-    const newContent = `${start}${emoji}${end}`;
-
-    setValue("message", newContent);
-
-    // ตั้ง cursor หลังอัปเดต content
-    const cursorPosition = !start ? emoji.length : start.length + emoji.length;
-    input.selectionStart = cursorPosition;
-    input.selectionEnd = cursorPosition;
-    setFocus("message");
-  }
-
-  const handleOpenEmojiPicker = useCallback((open: boolean) => {
-    const focused = document.activeElement === inputRef.current;
-    if (focused) {
-      setOpenEmojiPicker(true);
-      return;
-    }
-    setOpenEmojiPicker(open);
-  }, []);
 
   return (
     <Box borderRadius="lg" width="full" backgroundColor="white" p="4">
@@ -125,9 +86,9 @@ export function CreatePost() {
             variant="subtle"
           />
           <EmojiPicker
-            onEmojiSelect={handleEmojiSelect}
-            onOpenEmojiPicker={handleOpenEmojiPicker}
-            isOpenEmojiPicker={openEmojiPicker}
+            inputRef={inputRef}
+            useFormReturn={form}
+            valueKey="message"
           />
         </HStack>
         <Flex justifyContent="flex-end">
